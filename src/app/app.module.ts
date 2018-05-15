@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,6 +21,10 @@ import { AppService } from './service/app.service';
     ],
     imports: [
         StoreModule.forRoot(Reducers),
+        StoreDevtoolsModule.instrument({
+            maxAge: 25, // Retains last 25 states
+            logOnly: true, // Restrict extension to log-only mode
+        }),
         BrowserModule,
         BrowserAnimationsModule,
         MatTabsModule,
