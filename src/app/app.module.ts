@@ -2,7 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
@@ -27,7 +29,9 @@ import { AppService } from './service/app.service';
         }),
         BrowserModule,
         BrowserAnimationsModule,
-        MatTabsModule,
+        MatProgressSpinnerModule,
+        MatDividerModule,
+        MatIconModule,
         MatCardModule,
         AppRoutingModule,
         HttpClientModule,

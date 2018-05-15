@@ -15,20 +15,20 @@ export const defaultLaunchState: LaunchState = {
 export const launchReducer: ActionReducer<Object> = (state: LaunchState = defaultLaunchState, action: Action) => {
     const { payload } = action;
     switch (action.type) {
-        case launchTypes.FETCH_LAUNCH_API:
+        case launchTypes.FETCH_LAUNCH:
             return {
                 ...state,
                 fetching: true
             };
 
-        case launchTypes.SUCCESS_FETCH_LAUNCH_API:
+        case launchTypes.SUCCESS_FETCH_LATEST_LAUNCH:
             return {
                 ...state,
                 fetching: false,
                 latest: payload.launch
             };
 
-        case launchTypes.FAIL_FETCH_LAUNCH_API:
+        case launchTypes.FAIL_FETCH_LAUNCH:
             return {
                 ...state,
                 fetching: false
