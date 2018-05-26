@@ -1,6 +1,10 @@
+import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PageHomeComponent } from './page-home.component';
+
+@Component({ selector: 'mat-spinner', template: '' }) // tslint:disable-line
+class MatSpinnerComponent { }
 
 describe('PageHomeComponent', () => {
     let component: PageHomeComponent;
@@ -8,7 +12,7 @@ describe('PageHomeComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ PageHomeComponent ]
+            declarations: [PageHomeComponent, MatSpinnerComponent ]
         })
         .compileComponents();
     }));

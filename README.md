@@ -1,6 +1,14 @@
-# NinjaAngular
+# WeMaintainFrontTest
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.1.
+
+## Requirements
+- Node carbon (8.x)
+
+## Run this project
+- clone this repo
+- `npm i`
+- `npm start`
 
 ## Development server
 

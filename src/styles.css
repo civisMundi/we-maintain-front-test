@@ -2,6 +2,10 @@
 
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+body {
+    font-family: BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
 .flex-column {
     display: flex;
     flex-direction: column;
