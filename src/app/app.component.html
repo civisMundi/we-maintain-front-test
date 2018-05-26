@@ -8,15 +8,15 @@
                 <span>The chat experience</span>
             </a>
         </p>
-        <a mat-icon-button href="https://github.com/civisMundi/we-maintain-front-test" target="_blank">
-            <span class="fab fa-github"></span>
-        </a>
+        <button (click)="openDialog()" mat-icon-button>
+            <span class="fa fa-user"></span>
+        </button>
     </mat-toolbar-row>
 </mat-toolbar>
 <mat-drawer-container class="main-container" autosize>
     <mat-drawer #drawer class="main-drawer" mode="over">
         <mat-nav-list>
-            <a mat-list-item routerLink="/public">Public</a>
+            <a mat-list-item routerLink="/home">Public</a>
         </mat-nav-list>
     </mat-drawer>
     <div class="content-container">
@@ -29,6 +29,6 @@
         <p class="copyright">Multipass © all rights reserved.</p>
     </div>
     <div>
-        <a target="_blank" href="https://github.com/civisMundi">My work</a>
+        <a target="_blank" href="https://github.com/civisMundi/we-maintain-front-test">Source</a>
     </div>
 </footer>

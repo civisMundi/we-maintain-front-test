@@ -1,0 +1,19 @@
+<div class="relative full-width full-height login-container" *ngIf="form">
+    <h4>Tell me more</h4>
+    <mat-divider></mat-divider>
+    <form (ngSubmit)="onSubmit()" class="login-form">
+        <mat-form-field class="full-width">
+            <input matInput placeholder="Sandy" [formControl]="form" [errorStateMatcher]="matcher">
+            <mat-error *ngIf="form.hasError('required')">
+                Name is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="form.hasError('minlength') && !form.hasError('required')">
+                Name has to be at least {{minLength}} characters long
+            </mat-error>
+            <mat-error *ngIf="form.hasError('maxlength')">
+                Name has to be {{maxLength}} characters long tops
+            </mat-error>
+        </mat-form-field>
+    </form>
+    <button mat-raised-button class="coucou-valid-btn" color="primary" (click)="onSubmit()">Valid</button>
+</div>

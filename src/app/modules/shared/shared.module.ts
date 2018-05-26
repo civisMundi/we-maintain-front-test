@@ -15,6 +15,10 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatRadioModule } from "@angular/material/radio";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material";
+
 
 @NgModule({
     imports: [CommonModule],
@@ -34,7 +38,10 @@ import { MatRadioModule } from "@angular/material/radio";
         MatChipsModule,
         MatButtonToggleModule,
         MatRadioModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatInputModule,
     ],
     declarations: []
 })
