@@ -1,14 +1,18 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from "@angular/core";
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { PageHomeComponent } from './page-home.component';
+import { PageHomeComponent } from "./page-home.component";
 
-describe('PageHomeComponent', () => {
+@Component({ selector: "mat-spinner", template: "" }) // tslint:disable-line
+class MatSpinnerComponent { }
+
+describe("PageHomeComponent", () => {
     let component: PageHomeComponent;
     let fixture: ComponentFixture<PageHomeComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ PageHomeComponent ]
+            declarations: [PageHomeComponent, MatSpinnerComponent ]
         })
         .compileComponents();
     }));
@@ -19,7 +23,7 @@ describe('PageHomeComponent', () => {
         fixture.detectChanges();
     });
 
-    it('should create', () => {
+    it("should create", () => {
         expect(component).toBeTruthy();
     });
 });

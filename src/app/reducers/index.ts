@@ -1,20 +1,16 @@
-import { LaunchState, launchReducer, defaultLaunchState } from './launch.reducer';
-import { RocketState, rocketReducer, defaultRocketState } from './rocket.reducer';
-import { ActionReducer, combineReducers } from '@ngrx/store';
+import { MessagesState, messagesReducer, defaultMessagesState } from "./messages/messages.reducer";
+import { ActionReducer, combineReducers } from "@ngrx/store";
 
 export interface AppState {
-    launch: LaunchState;
-    rocket: RocketState;
+    launch: MessagesState;
 }
 
 export const Reducers: any = {
-    launch: launchReducer,
-    rocket: rocketReducer
+    messages: messagesReducer,
 };
 
 export const defaultAppState: any = {
-    launch: defaultLaunchState,
-    rocket: defaultRocketState
+    messages: defaultMessagesState,
 };
 
 const productionReducer: ActionReducer<AppState> = combineReducers(Reducers);
