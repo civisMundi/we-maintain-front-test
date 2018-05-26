@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from "@angular/core";
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { PageHomeComponent } from './page-home.component';
+import { PageHomeComponent } from "./page-home.component";
 
-@Component({ selector: 'mat-spinner', template: '' }) // tslint:disable-line
+@Component({ selector: "mat-spinner", template: "" }) // tslint:disable-line
 class MatSpinnerComponent { }
 
-describe('PageHomeComponent', () => {
+describe("PageHomeComponent", () => {
     let component: PageHomeComponent;
     let fixture: ComponentFixture<PageHomeComponent>;
 
@@ -23,7 +23,7 @@ describe('PageHomeComponent', () => {
         fixture.detectChanges();
     });
 
-    it('should create', () => {
+    it("should create", () => {
         expect(component).toBeTruthy();
     });
 });

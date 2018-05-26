@@ -1,13 +1,13 @@
-import { RoutingModule } from './routing.module';
+import { RoutingModule } from "./routing.module";
 
-describe('RoutingModule', () => {
+describe("RoutingModule", () => {
     let appRoutingModule: RoutingModule;
 
     beforeEach(() => {
         appRoutingModule = new RoutingModule();
     });
 
-    it('should create an instance', () => {
+    it("should create an instance", () => {
         expect(appRoutingModule).toBeTruthy();
     });
 });

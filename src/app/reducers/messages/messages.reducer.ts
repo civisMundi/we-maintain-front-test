@@ -1,7 +1,7 @@
-import { ActionReducer } from '@ngrx/store';
-import * as messageTypes from '../../actions/types/messages.type';
-import { Action } from '../../typings/Action';
-import { Message } from '../../typings/Message';
+import { ActionReducer } from "@ngrx/store";
+import * as messageTypes from "../../actions/types/messages.type";
+import { Action } from "../../typings/Action";
+import { Message } from "../../typings/Message";
 
 export interface MessagesState {
     fetching: boolean;

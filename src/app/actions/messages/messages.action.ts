@@ -1,6 +1,6 @@
-import { Action } from '../../typings/Action';
-import { Message } from '../../typings/Message';
-import * as messagesTypes from '../types/messages.type';
+import { Action } from "../../typings/Action";
+import { Message } from "../../typings/Message";
+import * as messagesTypes from "../types/messages.type";
 
 export const fetchingMessages = (): Action => {
     return {

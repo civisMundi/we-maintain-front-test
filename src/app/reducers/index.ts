@@ -1,5 +1,5 @@
-import { MessagesState, messagesReducer, defaultMessagesState } from './messages/messages.reducer';
-import { ActionReducer, combineReducers } from '@ngrx/store';
+import { MessagesState, messagesReducer, defaultMessagesState } from "./messages/messages.reducer";
+import { ActionReducer, combineReducers } from "@ngrx/store";
 
 export interface AppState {
     launch: MessagesState;
