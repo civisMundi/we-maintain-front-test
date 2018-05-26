@@ -12,6 +12,9 @@ import { Reducers } from "./reducers/index";
 import { AppComponent } from "./app.component";
 import { PageHomeComponent } from "./ui/page/page-home/page-home.component";
 
+import { MainSendbird } from "./providers/sendbird/main.service";
+import { UserService } from "./providers/user/user.service";
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -31,8 +34,10 @@ import { PageHomeComponent } from "./ui/page/page-home/page-home.component";
         HttpClientModule,
     ],
     providers: [
+        MainSendbird,
+        UserService,
     ],
     bootstrap: [AppComponent],
-    exports: [PageHomeComponent]
+    exports: []
 })
 export class AppModule { }
