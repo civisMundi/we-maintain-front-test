@@ -1,7 +1,7 @@
 import { Action } from "../../typings/Action";
 import { Message } from "../../typings/Message";
 import * as userTypes from "../types/user.type";
-import { User } from "sendbird";
+import { User } from "../../typings/User";
 
 export const fetchingUser = (): Action => {
     return {

@@ -1,7 +1,7 @@
 import { ActionReducer } from "@ngrx/store";
 import * as userTypes from "../../actions/types/user.type";
 import { Action } from "../../typings/Action";
-import { User } from "sendbird";
+import { User } from "../../typings/User";
 
 export interface UserState {
     fetching: boolean;
@@ -14,7 +14,7 @@ export const defaultUserState: UserState = {
     data: null,
 };
 
-export const userReducer: ActionReducer<Object> = (state: UserState = defaultUserState, action: Action) => {
+export const userReducer: ActionReducer<UserState> = (state: UserState = defaultUserState, action: Action) => {
     const { payload } = action;
     switch (action.type) {
         case userTypes.CONNECTING_USER:
@@ -27,7 +27,10 @@ export const userReducer: ActionReducer<Object> = (state: UserState = defaultUse
                 ...state,
                 fetching: false,
                 isIdentified: true,
-                data: payload.user,
+                data: {
+                    ...payload.user,
+                    nickname: payload.user.nickname || payload.user.userId
+                },
             };
         case userTypes.FAIL_CONNECTED_USER:
             return {

@@ -1,6 +1,8 @@
 import { Component } from "@angular/core";
+import { MatDialogRef } from "@angular/material/dialog";
 import { FormGroup, FormControl, Validators, FormGroupDirective, NgForm } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material/core";
+import { UserService } from "../../../providers/user/user.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -25,17 +27,18 @@ export class LoginBoxComponent {
     ]);
     matcher = new MyErrorStateMatcher();
 
-    constructor() { }
+    constructor(public dialogRef: MatDialogRef<LoginBoxComponent>, private userService: UserService) { }
 
     get hasError(): boolean {
         return this.form.errors !== null;
     }
 
-    onSubmit(): boolean {
+    async onSubmit(): Promise<boolean> {
         if (this.hasError) {
             return false;
         }
-        // @TODO api call
+        this.dialogRef.close();
+        return await this.userService.noAuthLogin(this.form.value);
     }
 
 }

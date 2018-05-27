@@ -18,6 +18,7 @@ import { MatRadioModule } from "@angular/material/radio";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material";
+import { MatMenuModule } from "@angular/material/menu";
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { MatInputModule } from "@angular/material";
         MatDialogModule,
         MatFormFieldModule,
         MatInputModule,
+        MatMenuModule,
     ],
     declarations: []
 })

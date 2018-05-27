@@ -10,7 +10,7 @@ const defaultState = {
     data: null,
 };
 
-describe("Reducer - Messages", () => {
+describe("Reducer - User", () => {
     beforeEach(async(() => {
     }));
 
@@ -34,12 +34,25 @@ describe("Reducer - Messages", () => {
     it("should SUCCESS_CONNECTED_USER", async(() => {
         const action: Action = {
             type: userTypes.SUCCESS_CONNECTED_USER,
-            payload: { user: { ouais: "bien ?"} }
+            payload: { user: { nickname: "ah", userId: "ok" } }
         };
         expect(userReducer(undefined, action)).toEqual({
             ...defaultState,
             fetching: false,
-            data: { ouais: "bien ?" },
+            data: { nickname: "ah", userId: "ok" },
+            isIdentified: true,
+        });
+    }));
+
+    it("should SUCCESS_CONNECTED_USER and set nickname to user's id", async(() => {
+        const action: Action = {
+            type: userTypes.SUCCESS_CONNECTED_USER,
+            payload: { user: { nickname: undefined, userId: "ok" } }
+        };
+        expect(userReducer(undefined, action)).toEqual({
+            ...defaultState,
+            fetching: false,
+            data: { nickname: "ok", userId: "ok" },
             isIdentified: true,
         });
     }));

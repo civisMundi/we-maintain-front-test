@@ -8,9 +8,26 @@
                 <span>The chat experience</span>
             </a>
         </p>
-        <button (click)="openDialog()" mat-icon-button>
+        <button *ngIf="!userState.isIdentified && !userState.fetching" (click)="openDialog()" mat-icon-button>
             <span class="fa fa-user"></span>
         </button>
+        <mat-spinner diameter="25" color="accent" *ngIf="userState.fetching"></mat-spinner>
+
+        <img *ngIf="userState.isIdentified && !userState.fetching" mat-icon-button [matMenuTriggerFor]="menu" id="identified-user-logo" src="{{userState.data.profileUrl}}" alt="">
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+                <mat-icon>dialpad</mat-icon>
+                <span>Redial</span>
+            </button>
+            <button mat-menu-item disabled>
+                <mat-icon>voicemail</mat-icon>
+                <span>Check voicemail</span>
+            </button>
+            <button mat-menu-item>
+                <mat-icon>notifications_off</mat-icon>
+                <span>Disable alerts</span>
+            </button>
+        </mat-menu>
     </mat-toolbar-row>
 </mat-toolbar>
 <mat-drawer-container class="main-container" autosize>

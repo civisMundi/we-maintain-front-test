@@ -1,5 +1,5 @@
 <div class="relative full-width full-height login-container" *ngIf="form">
-    <h4>Tell me more</h4>
+    <h2 mat-dialog-title>Tell me more</h2>
     <mat-divider></mat-divider>
     <form (ngSubmit)="onSubmit()" class="login-form">
         <mat-form-field class="full-width">
@@ -15,5 +15,5 @@
             </mat-error>
         </mat-form-field>
     </form>
-    <button mat-raised-button [disabled]="hasError" class="coucou-valid-btn" color="primary" (click)="onSubmit()">Valid</button>
+    <button mat-raised-button [disabled]="hasError || isLoading" class="coucou-valid-btn" color="primary" (click)="onSubmit()">Valid</button>
 </div>

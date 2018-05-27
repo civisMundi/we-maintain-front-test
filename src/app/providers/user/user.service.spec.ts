@@ -1,11 +1,16 @@
 import { TestBed, inject } from "@angular/core/testing";
 
 import { UserService } from "./user.service";
+import { StoreModule, Store } from "@ngrx/store";
+import { AppState, appReducer } from "../../reducers";
 
 describe("UserService", () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [UserService]
+            imports: [StoreModule.forRoot(appReducer)],
+            providers: [
+                UserService
+            ]
         });
     });
 

@@ -2,9 +2,21 @@ import { Component, Injectable } from "@angular/core";
 import { TestBed, async } from "@angular/core/testing";
 import { AppComponent } from "./app.component";
 import { MatDialog } from "@angular/material/dialog";
+import { UserService } from "./providers/user/user.service";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatMenuModule } from "@angular/material/menu";
+import { StoreModule } from "@ngrx/store";
+import { appReducer } from "./reducers";
+
+
 
 const matDialog: Partial<MatDialog> = {
-    open: jasmine.createSpy()
+    open: jasmine.createSpy(),
+};
+const userService: Partial<UserService> = {
+    noAuthLogin: jasmine.createSpy(),
+    restoreLocalUser: jasmine.createSpy(),
+    storeUserId: jasmine.createSpy(),
 };
 
 @Component({ selector: "router-outlet", template: "" }) // tslint:disable-line
@@ -29,6 +41,11 @@ class PageHomeComponent { }
 describe("AppComponent", () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
+            imports: [
+                MatProgressSpinnerModule,
+                MatMenuModule,
+                StoreModule.forRoot(appReducer),
+            ],
             declarations: [
                 AppComponent,
                 PageHomeComponent,
@@ -41,7 +58,10 @@ describe("AppComponent", () => {
                 MatDrawerComponent,
                 MatDrawerContainerComponent,
             ],
-            providers: [{ provide: MatDialog, useValue: matDialog}]
+            providers: [
+                { provide: MatDialog, useValue: matDialog},
+                { provide: UserService, useValue: userService},
+            ]
         }).compileComponents();
     }));
     it("should create the app", async(() => {
@@ -51,7 +71,9 @@ describe("AppComponent", () => {
     }));
     it(`should open dialog`, async(() => {
         const fixture = TestBed.createComponent(AppComponent);
-        const app = fixture.debugElement.componentInstance.openDialog();
+        const comp = fixture.debugElement.componentInstance;
+        comp.userState = {};
+        const app = comp.openDialog();
         expect(matDialog.open).toHaveBeenCalled();
     }));
     it("should instantiate mat-toolbar", async(() => {
