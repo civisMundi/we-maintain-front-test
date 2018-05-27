@@ -2,20 +2,22 @@ import { ActionReducer } from "@ngrx/store";
 import * as channelsTypes from "../../actions/types/channels.type";
 import { Action } from "../../typings/Action";
 import { User } from "../../typings/User";
-import { Channel } from "../../typings/Channel";
+import { ChannelInfo } from "../../typings/ChannelInfo";
 import { Message } from "../../typings/Message";
 
-export interface ChannelsState {
-    public: {
-        infos: {
-            data: Channel;
-            isFetching: boolean;
-        };
-        messages: {
-            data: Message[];
-            isFetching: boolean;
-        }
+export interface Channel {
+    infos: {
+        data: ChannelInfo;
+        isFetching: boolean;
     };
+    messages: {
+        data: Message[];
+        isFetching: boolean;
+    };
+}
+
+export interface ChannelsState {
+    public: Channel;
 }
 export const defaultChannelsState: ChannelsState = {
     public: {

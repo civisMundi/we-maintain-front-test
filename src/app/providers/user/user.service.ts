@@ -7,6 +7,7 @@ import { AppState } from "../../reducers";
 import { UserState, defaultUserState } from "../../reducers/user/user.reducer";
 import { fetchingUser, failedFetchUser, successFetchUser, logoutUser } from "../../actions/user/user.action";
 import { User } from "../../typings/User";
+import { ChannelsService } from "../channels/channels.service";
 
 @Injectable({
     providedIn: "root"
@@ -15,7 +16,7 @@ export class UserService {
     private static USER_STORE_KEY = "civispass_userId";
     private _userState: UserState;
 
-    constructor(private api: MainSendbird, private _state: Store<AppState>) {
+    constructor(private api: MainSendbird, private _state: Store<AppState>, private channelsService: ChannelsService) {
         _state.select((state: AppState) => state)
             .subscribe((state: AppState) => {
                 this._userState = state.user;
@@ -39,24 +40,25 @@ export class UserService {
         } catch (e) {}
     }
 
-    noAuthLogin(userId: string): Promise<boolean> {
+    async noAuthLogin(userId: string) {
         this._state.dispatch(fetchingUser());
-        return new Promise((resolve) => {
-            this.api.sb.connect(userId, (user: SendBirdUser, error: SendBirdError) => {
-                if (error) {
-                    this._state.dispatch(failedFetchUser());
-                    this.removeUserId();
-                    return resolve(false);
-                }
-                this._state.dispatch(successFetchUser(user));
-                this.storeUserId(user.userId);
-                return resolve(true);
-            });
+        const sb = await this.api.getSb();
+
+        sb.connect(userId, (user: SendBirdUser, error: SendBirdError) => {
+            if (error) {
+                this._state.dispatch(failedFetchUser());
+                this.removeUserId();
+            }
+            this._state.dispatch(successFetchUser(user));
+            this.channelsService.fetchPublicChannelMetaData();
+            this.storeUserId(user.userId);
         });
     }
 
-    logoutUser() {
+    async logoutUser() {
         this._state.dispatch(logoutUser());
         this.removeUserId();
+        const sb = await this.api.getSb();
+        sb.disconnect();
     }
 }

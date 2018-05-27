@@ -3,3 +3,41 @@
     padding: 16px 0;
     width: auto;
 }
+
+.civis-channel-container {
+    max-width: 1300px;
+}
+
+.civis-channel-container .channel-messages {
+    max-width: 1000px;
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+.civis-channel-container .channel-infos {
+    max-width: 300px;
+    -webkit-box-shadow: -3px 2px 5px 0px rgba(63,81,181,1);
+    -moz-box-shadow: -3px 2px 5px 0px rgba(63,81,181,1);
+    box-shadow: -3px 2px 5px 0px rgba(63,81,181,1);
+}
+
+.civis-channel-container .channel-infos .channel-infos-banner{
+    max-height: 200px;
+    overflow: hidden;
+    background-color: rgba(8, 8, 8, .3)
+}
+
+.civis-channel-container .channel-infos .channel-infos-banner .channel-infos-banner-img{
+    height: 100%;
+    width: auto;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    opacity: .3;
+}
+
+.civis-channel-container .channel-infos .channel-infos-banner .channel-infos-banner-title{
+    color: #fff;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+}
