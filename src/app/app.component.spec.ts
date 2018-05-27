@@ -37,6 +37,8 @@ class MatIconComponent { }
 class LoginBoxComponent { }
 @Component({ selector: "app-page-home", template: "" })
 class PageHomeComponent { }
+@Component({ selector: "mat-divider", template: "" }) // tslint:disable-line
+class MatDividerComponent { }
 
 describe("AppComponent", () => {
     beforeEach(async(() => {
@@ -57,6 +59,7 @@ describe("AppComponent", () => {
                 MatNavListComponent,
                 MatDrawerComponent,
                 MatDrawerContainerComponent,
+                MatDividerComponent,
             ],
             providers: [
                 { provide: MatDialog, useValue: matDialog},
