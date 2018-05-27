@@ -3,6 +3,7 @@ import { async } from "@angular/core/testing";
 import { userReducer } from "./user.reducer";
 import * as userTypes from "../../actions/types/user.type";
 import { Action } from "../../typings/Action";
+import { User } from "../../typings/User";
 
 const defaultState = {
     fetching: false,
@@ -10,8 +11,21 @@ const defaultState = {
     data: null,
 };
 
+let mockUser: User = null ;
+
 describe("Reducer - User", () => {
     beforeEach(async(() => {
+        mockUser = {
+            userId: "poulaymaning",
+            nickname: "poulaymaning",
+            profileUrl: "poulaymaning",
+            metaData: {},
+            connectionStatus: "poulaymaning",
+            lastSeenAt: "poulaymaning",
+            isActive: true,
+            friendDiscoveryKey: null,
+            friendName: null,
+        };
     }));
 
     it("should return default state", async(() => {
@@ -34,25 +48,29 @@ describe("Reducer - User", () => {
     it("should SUCCESS_CONNECTED_USER", async(() => {
         const action: Action = {
             type: userTypes.SUCCESS_CONNECTED_USER,
-            payload: { user: { nickname: "ah", userId: "ok" } }
+            payload: { user: mockUser }
         };
         expect(userReducer(undefined, action)).toEqual({
             ...defaultState,
             fetching: false,
-            data: { nickname: "ah", userId: "ok" },
+            data: mockUser,
             isIdentified: true,
         });
     }));
 
     it("should SUCCESS_CONNECTED_USER and set nickname to user's id", async(() => {
+        mockUser.nickname = undefined;
         const action: Action = {
             type: userTypes.SUCCESS_CONNECTED_USER,
-            payload: { user: { nickname: undefined, userId: "ok" } }
+            payload: { user: mockUser }
         };
         expect(userReducer(undefined, action)).toEqual({
             ...defaultState,
             fetching: false,
-            data: { nickname: "ok", userId: "ok" },
+            data: {
+                ...mockUser,
+                nickname: mockUser.userId,
+             },
             isIdentified: true,
         });
     }));

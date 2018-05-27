@@ -33,11 +33,21 @@ describe("Reducer - Messages", () => {
     it("should RECEIVED_MESSAGES", async(() => {
         const action: Action = {
             type: messageTypes.RECEIVED_MESSAGES,
-            payload: { messages: ["coucou"] }
+            payload: { messages: [{
+                id: "coucou",
+                user: null,
+                isoDate: "ahok",
+                content: "ahok",
+            }] }
         };
         expect(messagesReducer(undefined, action)).toEqual({
             ...defaultState,
-            all: ["coucou"]
+            all: [{
+                id: "coucou",
+                user: null,
+                isoDate: "ahok",
+                content: "ahok",
+            }]
         });
     }));
 
