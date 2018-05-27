@@ -1,5 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { MatIconModule } from "@angular/material/icon";
@@ -11,11 +12,16 @@ import { SharedModule } from "./modules/shared/shared.module";
 import { Reducers } from "./reducers/index";
 import { AppComponent } from "./app.component";
 import { PageHomeComponent } from "./ui/page/page-home/page-home.component";
+import { LoginBoxComponent } from "./ui/component/login-box/login-box.component";
+
+import { MainSendbird } from "./providers/sendbird/main.service";
+import { UserService } from "./providers/user/user.service";
 
 @NgModule({
     declarations: [
         AppComponent,
-        PageHomeComponent
+        PageHomeComponent,
+        LoginBoxComponent
     ],
     imports: [
         StoreModule.forRoot(Reducers),
@@ -29,10 +35,15 @@ import { PageHomeComponent } from "./ui/page/page-home/page-home.component";
         RoutingModule,
         SharedModule,
         HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
     ],
     providers: [
+        MainSendbird,
+        UserService,
     ],
     bootstrap: [AppComponent],
-    exports: [PageHomeComponent]
+    entryComponents: [LoginBoxComponent],
+    exports: []
 })
 export class AppModule { }

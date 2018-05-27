@@ -12,7 +12,7 @@ export const defaultMessagesState: MessagesState = {
     all: []
 };
 
-export const messagesReducer: ActionReducer<Object> = (state: MessagesState = defaultMessagesState, action: Action) => {
+export const messagesReducer: ActionReducer<MessagesState> = (state: MessagesState = defaultMessagesState, action: Action) => {
     const { payload } = action;
     switch (action.type) {
         case messageTypes.FETCH_MESSAGES:

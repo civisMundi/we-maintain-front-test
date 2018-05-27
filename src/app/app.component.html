@@ -1,1 +1,43 @@
-<app-page-home></app-page-home>
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <button mat-icon-button (click)="drawer.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <p class="main-toolbar-title" align="center">
+            <a href="/" class="link-logo">
+                <span>The chat experience</span>
+            </a>
+        </p>
+        <button *ngIf="!userState.isIdentified && !userState.fetching" (click)="openDialog()" mat-icon-button>
+            <span class="fa fa-user"></span>
+        </button>
+        <mat-spinner diameter="25" color="accent" *ngIf="userState.fetching"></mat-spinner>
+
+        <img *ngIf="userState.isIdentified && !userState.fetching" mat-icon-button [matMenuTriggerFor]="menu" id="identified-user-logo" src="{{userState.data.profileUrl}}" alt="">
+        <mat-menu #menu="matMenu">
+            <button (click)="handleLogout()" mat-menu-item>
+                <mat-icon>clear</mat-icon>
+                <span>Logout</span>
+            </button>
+        </mat-menu>
+    </mat-toolbar-row>
+</mat-toolbar>
+<mat-drawer-container class="main-container" autosize>
+    <mat-drawer #drawer class="main-drawer" mode="over">
+        <mat-nav-list>
+            <a mat-list-item routerLink="/home">Public</a>
+        </mat-nav-list>
+    </mat-drawer>
+    <div class="content-container">
+        <router-outlet></router-outlet>
+    </div>
+</mat-drawer-container>
+<footer class="footer">
+    <p>dydys' multichat</p>
+    <div>
+        <p class="copyright">Multipass © all rights reserved.</p>
+    </div>
+    <div>
+        <a target="_blank" href="https://github.com/civisMundi/we-maintain-front-test">Source</a>
+    </div>
+</footer>
