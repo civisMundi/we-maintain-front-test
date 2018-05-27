@@ -2,7 +2,7 @@ import { Action } from "../../typings/Action";
 import { Message } from "../../typings/Message";
 import * as channelsTypes from "../types/channels.type";
 import { User } from "../../typings/User";
-import { Channel } from "../../typings/Channel";
+import { ChannelData } from "../../typings/ChannelInfo";
 
 export const fetchingPublicChannelMsgs = (): Action => {
     return {
@@ -29,7 +29,7 @@ export const fetchingPublicChannelInfos = (): Action => {
     };
 };
 
-export const successFetchPublicChannelInfos = (data: Channel): Action => {
+export const successFetchPublicChannelInfos = (data: ChannelData): Action => {
     return {
         type: channelsTypes.SUCCESS_FETCH_PUBLIC_CHANNEL_INFOS,
         payload: { data }

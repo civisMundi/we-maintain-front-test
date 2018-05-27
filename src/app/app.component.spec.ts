@@ -5,6 +5,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { UserService } from "./providers/user/user.service";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatMenuModule } from "@angular/material/menu";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { StoreModule } from "@ngrx/store";
 import { appReducer } from "./reducers";
 
@@ -47,6 +48,7 @@ describe("AppComponent", () => {
                 MatProgressSpinnerModule,
                 MatMenuModule,
                 StoreModule.forRoot(appReducer),
+                MatSnackBarModule,
             ],
             declarations: [
                 AppComponent,

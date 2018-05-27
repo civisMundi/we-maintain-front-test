@@ -1,2 +1,17 @@
-<mat-spinner *ngIf="isLoading"></mat-spinner>
-<h1>Coucou Home page</h1>
+<div class="full-width full-height flex-column">
+    <button *ngIf="!userState.isIdentified" (click)="openDialog()" mat-raised-button>Choose a name</button>
+    <div *ngIf="userState.isIdentified" class="civis-channel-container full-width full-height flex-row margin-auto">
+        <div class="full-height full-width margin-auto flex-column channel-messages ">
+            <mat-spinner *ngIf="channel.messages.isFetching" diameter="40" color="primary"></mat-spinner>
+            <p *ngIf="channel.messages.data.length == 0">This channel has no messages yet</p>
+            {{ channel.messages | json }}
+        </div>
+        <div class="full-height full-width margin-auto flex-column channel-infos justify-content-start">
+            <mat-spinner *ngIf="channel.infos.isFetching" diameter="40" color="primary"></mat-spinner>
+            <div *ngIf="channel.infos.data != null" class="channel-infos-banner relative full-width full-height flex-row">
+                <img class="absolute channel-infos-banner-img" [src]="channel.infos.data.coverUrl" alt="channel image">
+                <h3 class="channel-infos-banner-title">{{ channel.infos.data.name }}</h3>
+            </div>
+        </div>
+    </div>
+</div>

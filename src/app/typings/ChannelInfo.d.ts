@@ -11,7 +11,7 @@ export type ChannelData = {
     createdAt: string;
 }
 
-export type Channel = {
+export type ChannelInfo = {
     informations: ChannelData;
     messages: Message[];
 };

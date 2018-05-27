@@ -1,6 +1,6 @@
 .main-container {
     flex: 1;
-    min-height: calc(100vh - (64px + 64px));
+    height: calc(100vh - (64px + 64px));
 }
 
 .main-drawer {
@@ -9,9 +9,6 @@
     width: 200px;
 }
 
-.content-container {
-    padding: 15px;
-}
 mat-toolbar.mat-toolbar {
     width: 100%;
     overflow-x: hidden;
