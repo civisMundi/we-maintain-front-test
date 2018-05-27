@@ -15,17 +15,9 @@
 
         <img *ngIf="userState.isIdentified && !userState.fetching" mat-icon-button [matMenuTriggerFor]="menu" id="identified-user-logo" src="{{userState.data.profileUrl}}" alt="">
         <mat-menu #menu="matMenu">
-            <button mat-menu-item>
-                <mat-icon>dialpad</mat-icon>
-                <span>Redial</span>
-            </button>
-            <button mat-menu-item disabled>
-                <mat-icon>voicemail</mat-icon>
-                <span>Check voicemail</span>
-            </button>
-            <button mat-menu-item>
-                <mat-icon>notifications_off</mat-icon>
-                <span>Disable alerts</span>
+            <button (click)="handleLogout()" mat-menu-item>
+                <mat-icon>clear</mat-icon>
+                <span>Logout</span>
             </button>
         </mat-menu>
     </mat-toolbar-row>

@@ -31,10 +31,14 @@ export class AppComponent implements OnInit {
             return;
         }
         const dialogRef = this.dialog.open(LoginBoxComponent, {
-            height: "100%",
-            maxHeight: "250px",
-            width: "100%",
-            maxWidth: "300px",
+            id: "login-dialog-container"
         });
+    }
+
+    handleLogout(): void {
+        if (!this.userState.isIdentified || this.userState.fetching) {
+            return;
+        }
+        this.userService.logoutUser();
     }
 }

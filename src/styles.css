@@ -84,6 +84,8 @@ body {
     color: #ff4081
 }
 
-.cdk-overlay-pane {
-    margin: auto!important;
+#login-dialog-container {
+    margin: auto;
+    height: 250px;
+    width: 300px;
 }

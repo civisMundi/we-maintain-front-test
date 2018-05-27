@@ -11,7 +11,7 @@ export class MainSendbird {
         if (MainSendbird.instance === null) {
             MainSendbird.instance = new SendBird({ appId: "544368C6-DF3B-4534-A79D-054B15F64845" });
         }
-        console.log("MainSendbird.instance", MainSendbird.instance);
+        // console.log("MainSendbird.instance", MainSendbird.instance);
         return MainSendbird.instance;
     }
 }

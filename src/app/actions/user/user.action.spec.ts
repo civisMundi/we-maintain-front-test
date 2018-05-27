@@ -15,6 +15,12 @@ describe("Action - Messages", () => {
         });
     }));
 
+    it("should dispatch LOGOUT_USER", async(() => {
+        expect(userActions.logoutUser()).toEqual({
+            type: userTypes.LOGOUT_USER
+        });
+    }));
+
     it("should dispatch SUCCESS_CONNECTED_USER", async(() => {
         expect(userActions.successFetchUser(null)).toEqual({
             type: userTypes.SUCCESS_CONNECTED_USER,

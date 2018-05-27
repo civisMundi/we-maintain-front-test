@@ -15,6 +15,12 @@ export const failedFetchUser = (): Action => {
     };
 };
 
+export const logoutUser = (): Action => {
+    return {
+        type: userTypes.LOGOUT_USER
+    };
+};
+
 export const successFetchUser = (user: User): Action => {
     return {
         type: userTypes.SUCCESS_CONNECTED_USER,

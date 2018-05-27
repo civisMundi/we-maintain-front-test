@@ -39,7 +39,8 @@ export const userReducer: ActionReducer<UserState> = (state: UserState = default
                 isIdentified: false,
                 data: null,
             };
-
+        case userTypes.LOGOUT_USER:
+            return defaultUserState;
         default:
             return state;
     }

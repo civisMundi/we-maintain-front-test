@@ -5,16 +5,17 @@ import * as userTypes from "../../actions/types/user.type";
 import { Action } from "../../typings/Action";
 import { User } from "../../typings/User";
 
-const defaultState = {
-    fetching: false,
-    isIdentified: false,
-    data: null,
-};
+let defaultState = null;
 
 let mockUser: User = null ;
 
 describe("Reducer - User", () => {
     beforeEach(async(() => {
+        defaultState = {
+            fetching: false,
+            isIdentified: false,
+            data: null,
+        };
         mockUser = {
             userId: "poulaymaning",
             nickname: "poulaymaning",
@@ -56,6 +57,19 @@ describe("Reducer - User", () => {
             data: mockUser,
             isIdentified: true,
         });
+    }));
+
+    it("should LOGOUT_USER", async(() => {
+        const loginAction: Action = {
+            type: userTypes.SUCCESS_CONNECTED_USER,
+            payload: { user: mockUser }
+        };
+        const logoutAction: Action = {
+            type: userTypes.LOGOUT_USER
+        };
+        const loggedInState = userReducer(undefined, loginAction);
+        const logoutState = userReducer(loggedInState, logoutAction);
+        expect(logoutState).toEqual(defaultState);
     }));
 
     it("should SUCCESS_CONNECTED_USER and set nickname to user's id", async(() => {

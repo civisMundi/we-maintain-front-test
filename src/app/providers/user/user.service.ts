@@ -5,7 +5,7 @@ import { SendBirdError, User as SendBirdUser } from "sendbird";
 import { MainSendbird } from "../sendbird/main.service";
 import { AppState } from "../../reducers";
 import { UserState, defaultUserState } from "../../reducers/user/user.reducer";
-import { fetchingUser, failedFetchUser, successFetchUser } from "../../actions/user/user.action";
+import { fetchingUser, failedFetchUser, successFetchUser, logoutUser } from "../../actions/user/user.action";
 import { User } from "../../typings/User";
 
 @Injectable({
@@ -26,6 +26,10 @@ export class UserService {
         localStorage.setItem(UserService.USER_STORE_KEY, id);
     }
 
+    removeUserId() {
+        localStorage.removeItem(UserService.USER_STORE_KEY);
+    }
+
     restoreLocalUser() {
         try {
             const userId: string = localStorage.getItem(UserService.USER_STORE_KEY);
@@ -41,6 +45,7 @@ export class UserService {
             this.api.sb.connect(userId, (user: SendBirdUser, error: SendBirdError) => {
                 if (error) {
                     this._state.dispatch(failedFetchUser());
+                    this.removeUserId();
                     return resolve(false);
                 }
                 this._state.dispatch(successFetchUser(user));
@@ -48,5 +53,10 @@ export class UserService {
                 return resolve(true);
             });
         });
+    }
+
+    logoutUser() {
+        this._state.dispatch(logoutUser());
+        this.removeUserId();
     }
 }
