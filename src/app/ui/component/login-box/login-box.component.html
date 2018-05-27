@@ -15,5 +15,5 @@
             </mat-error>
         </mat-form-field>
     </form>
-    <button mat-raised-button class="coucou-valid-btn" color="primary" (click)="onSubmit()">Valid</button>
+    <button mat-raised-button [disabled]="hasError" class="coucou-valid-btn" color="primary" (click)="onSubmit()">Valid</button>
 </div>
