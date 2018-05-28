@@ -2,12 +2,12 @@ import { ActionReducer } from "@ngrx/store";
 import * as channelsTypes from "../../actions/types/channels.type";
 import { Action } from "../../typings/Action";
 import { User } from "../../typings/User";
-import { ChannelInfo } from "../../typings/ChannelInfo";
+import { ChannelData } from "../../typings/ChannelInfo";
 import { Message } from "../../typings/Message";
 
 export interface Channel {
     infos: {
-        data: ChannelInfo;
+        data: ChannelData;
         isFetching: boolean;
     };
     messages: {

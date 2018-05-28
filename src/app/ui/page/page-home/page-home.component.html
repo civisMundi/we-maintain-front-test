@@ -1,17 +1,35 @@
 <div class="full-width full-height flex-column">
     <button *ngIf="!userState.isIdentified" (click)="openDialog()" mat-raised-button>Choose a name</button>
     <div *ngIf="userState.isIdentified" class="civis-channel-container full-width full-height flex-row margin-auto">
-        <div class="full-height full-width margin-auto flex-column channel-messages ">
+        <div class="full-height full-width margin-auto flex-column justify-content-end channel-messages">
             <mat-spinner *ngIf="channel.messages.isFetching" diameter="40" color="primary"></mat-spinner>
-            <p *ngIf="channel.messages.data.length == 0">This channel has no messages yet</p>
-            {{ channel.messages | json }}
+            <div class="full-width full-height flex-column justify-content-end align-items-start">
+                <p *ngIf="channel.messages.data.length == 0; else messagesList">This channel has no messages yet</p>
+            </div>
+            <form class="user-message-form full-width flex-row">
+                <mat-form-field id="mat-form-field-textarea" class="full-width">
+                    <textarea name="userMsg" id="user-current-message" [matTextareaAutosize] matInput placeholder="Your message" [(ngModel)]="currentUserMessage"></textarea>
+                </mat-form-field>
+                <button (click)="sendMsg()" [disabled]="!isMsgValid() || channel.messages.isFetching" mat-icon-button color="primary">
+                    <mat-icon aria-label="Send msg">send</mat-icon>
+                </button>
+            </form>
+
         </div>
         <div class="full-height full-width margin-auto flex-column channel-infos justify-content-start">
             <mat-spinner *ngIf="channel.infos.isFetching" diameter="40" color="primary"></mat-spinner>
-            <div *ngIf="channel.infos.data != null" class="channel-infos-banner relative full-width full-height flex-row">
+            <div *ngIf="channel.infos.data != null" class="channel-infos-banner relative full-width full-height flex-column">
                 <img class="absolute channel-infos-banner-img" [src]="channel.infos.data.coverUrl" alt="channel image">
                 <h3 class="channel-infos-banner-title">{{ channel.infos.data.name }}</h3>
+                <p class="channel-infos-banner-date">{{ channel.infos.data.createdAt | date }}</p>
             </div>
         </div>
     </div>
 </div>
+
+
+<ng-template #messagesList>
+    <div *ngFor="let message of channel.messages.data" class="channel.messages-item">
+        <p class="fade-in one">{{ message | json }}</p>
+    </div>
+</ng-template>

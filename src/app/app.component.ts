@@ -24,18 +24,20 @@ export class AppComponent implements OnInit {
         .select((state: AppState) => state)
         .subscribe((state: AppState) => {
             this.userState = state.user ? state.user : defaultUserState;
-            if (this.snackbarRef !== null && state.notifs.snack === null) {
-                this.snackbarRef.dismiss();
-                this.snackbarRef.afterDismissed().subscribe(() => {
-                    this.snackbarRef = null;
-                });
-            } else if (this.snackbarRef === null && state.notifs.snack !== null) {
-                this.snackbarRef = this.snackBar.open(state.notifs.snack, "Ok", {
-                    duration: 3000
-                });
-                this.snackbarRef.afterDismissed().subscribe(() => {
-                    this._state.dispatch(setSnackMsg(null));
-                });
+            if (state.notifs) {
+                if (this.snackbarRef !== null && state.notifs.snack === null) {
+                    this.snackbarRef.dismiss();
+                    this.snackbarRef.afterDismissed().subscribe(() => {
+                        this.snackbarRef = null;
+                    });
+                } else if (this.snackbarRef === null && state.notifs.snack !== null) {
+                    this.snackbarRef = this.snackBar.open(state.notifs.snack, "Ok", {
+                        duration: 3000
+                    });
+                    this.snackbarRef.afterDismissed().subscribe(() => {
+                        this._state.dispatch(setSnackMsg(null));
+                    });
+                }
             }
         });
         this.userService.restoreLocalUser();

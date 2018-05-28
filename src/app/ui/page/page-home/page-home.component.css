@@ -41,3 +41,20 @@
     text-transform: capitalize;
     letter-spacing: 1px;
 }
+.civis-channel-container .channel-infos .channel-infos-banner .channel-infos-banner-date
+{
+    color: #fff;
+    text-transform: capitalize;
+    font-style: italic;
+    font-size: 11px;
+}
+.user-message-form {
+    background: rgba(8, 8, 8, .1);
+    padding: 16px 0;
+}
+#user-current-message {
+    max-height: 100px;
+}
+#mat-form-field-textarea {
+    width: 90%;
+}

@@ -1,6 +1,8 @@
 import { Component } from "@angular/core";
 import { StoreModule } from "@ngrx/store";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { MatInputModule } from "@angular/material/input";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 import { PageHomeComponent } from "./page-home.component";
 import { appReducer } from "../../../reducers";
@@ -28,6 +30,9 @@ describe("PageHomeComponent", () => {
             declarations: [PageHomeComponent, MatSpinnerComponent ],
             imports: [
                 StoreModule.forRoot(appReducer),
+                MatInputModule,
+                ReactiveFormsModule,
+                FormsModule,
             ],
             providers: [
                 { provide: MatDialog, useValue: matDialog },
