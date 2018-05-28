@@ -51,8 +51,10 @@ export class UserService {
             this._state.dispatch(successFetchUser(user));
             this.storeUserId(user.userId);
             const fetchedInfos = await this.sendbird.fetchCurrentOpenChannelInfos();
-            console.log("fetched infos", fetchedInfos);
-            const fetchedMessages = await this.sendbird.fetchCurrentOpenChannelMessages();
+            if (!fetchedInfos) {
+                return;
+            }
+            this.sendbird.fetchCurrentOpenChannelMessages();
         });
     }
 

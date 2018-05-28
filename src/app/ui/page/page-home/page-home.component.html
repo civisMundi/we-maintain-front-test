@@ -29,7 +29,5 @@
 
 
 <ng-template #messagesList>
-    <div *ngFor="let message of channel.messages.data" class="channel.messages-item">
-        <p class="fade-in one">{{ message | json }}</p>
-    </div>
+    <app-message-component class="full-width" *ngFor="let message of channel.messages.data" [message]="message"></app-message-component>
 </ng-template>

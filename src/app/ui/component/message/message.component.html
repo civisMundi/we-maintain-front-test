@@ -1,0 +1,18 @@
+<div class="fade-in one flex-row align-items-start message-container">
+	<div>
+		<img class="user-icon" *ngIf="message._sender && message._sender.profileUrl; else defaultUserIcon" [src]="message._sender.profileUrl" alt="user image">
+	</div>
+	<div class="data-container flex-column">
+		<div class="meta-data-container full-width flex-row justify-content-start">
+			<p class="user-nickname">{{ getUserNickname() }}</p>
+			<p *ngIf="isTooOld()" class="message-date">{{ message.createdAt | date:'short' }}</p>
+			<p *ngIf="!isTooOld()" class="message-date">{{ message.createdAt | date:'shortTime' }}</p>
+		</div>
+		<p class="margin-auto message-content">{{ message.message }}</p>
+	</div>
+	
+</div>
+
+<ng-template #defaultUserIcon>
+	<mat-icon class="default-user-icon">person</mat-icon>
+</ng-template>

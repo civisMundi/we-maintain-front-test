@@ -3,7 +3,7 @@
 
 body {
     margin: 0;
-    font-family: Roboto;
+    font-family: -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI", "Segoe UI Emoji", "Segoe UI Symbol", "Meiryo UI";
 }
 
 .relative {

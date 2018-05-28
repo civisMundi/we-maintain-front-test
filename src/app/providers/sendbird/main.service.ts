@@ -132,7 +132,7 @@ export class MainSendbird {
                     resolve(false);
                     return;
                 }
-                this._state.dispatch(channelsActions.successFetchCurrentChannelMsgs(messageList));
+                this._state.dispatch(channelsActions.successFetchCurrentChannelMsgs(messageList.reverse()));
                 resolve(true);
             });
         });
