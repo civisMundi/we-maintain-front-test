@@ -22,17 +22,29 @@ describe("Action - Messages", () => {
 
     it("should dispatch successFetchingMessages", async(() => {
         expect(messagesActions.successFetchingMessages([{
-            id: "coucou",
-            user: null,
-            isoDate: "ohmygad",
-            content: "it breathes"
+            channelUrl: "poulay",
+            channelType: "poulay",
+            messageId: 123,
+            message: "poulay",
+            messageType: "poulay",
+            data: "poulay",
+            customType: "poulay",
+            mentionedUsers: [],
+            createdAt: 123456,
+            updatedAt: null
         }])).toEqual({
             type: messagesTypes.RECEIVED_MESSAGES,
             payload: {messages: [{
-                id: "coucou",
-                user: null,
-                isoDate: "ohmygad",
-                content: "it breathes"
+                channelUrl: "poulay",
+                channelType: "poulay",
+                messageId: 123,
+                message: "poulay",
+                messageType: "poulay",
+                data: "poulay",
+                customType: "poulay",
+                mentionedUsers: [],
+                createdAt: 123456,
+                updatedAt: null
             }]}
         });
     }));

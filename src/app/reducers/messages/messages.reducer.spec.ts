@@ -34,19 +34,31 @@ describe("Reducer - Messages", () => {
         const action: Action = {
             type: messageTypes.RECEIVED_MESSAGES,
             payload: { messages: [{
-                id: "coucou",
-                user: null,
-                isoDate: "ahok",
-                content: "ahok",
+                channelUrl: "poulay",
+                channelType: "poulay",
+                messageId: 123,
+                message: "poulay",
+                messageType: "poulay",
+                data: "poulay",
+                customType: "poulay",
+                mentionedUsers: [],
+                createdAt: 123456,
+                updatedAt: null
             }] }
         };
         expect(messagesReducer(undefined, action)).toEqual({
             ...defaultState,
             all: [{
-                id: "coucou",
-                user: null,
-                isoDate: "ahok",
-                content: "ahok",
+                channelUrl: "poulay",
+                channelType: "poulay",
+                messageId: 123,
+                message: "poulay",
+                messageType: "poulay",
+                data: "poulay",
+                customType: "poulay",
+                mentionedUsers: [],
+                createdAt: 123456,
+                updatedAt: null
             }]
         });
     }));

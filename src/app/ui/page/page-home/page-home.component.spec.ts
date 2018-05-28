@@ -7,19 +7,16 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { PageHomeComponent } from "./page-home.component";
 import { appReducer } from "../../../reducers";
 import { MatDialog } from "@angular/material";
-import { ChannelsService } from "../../../providers/channels/channels.service";
 
 const matDialog: Partial<MatDialog> = {
     open: jasmine.createSpy(),
 };
 
-const channelsService: Partial<ChannelsService> = {
-    fetchPublicChannelMetaData: jasmine.createSpy(),
-};
-
-
 @Component({ selector: "mat-spinner", template: "" }) // tslint:disable-line
 class MatSpinnerComponent { }
+
+@Component({ selector: "mat-icon", template: "" }) // tslint:disable-line
+class MatIconComponent { }
 
 describe("PageHomeComponent", () => {
     let component: PageHomeComponent;
@@ -27,7 +24,11 @@ describe("PageHomeComponent", () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [PageHomeComponent, MatSpinnerComponent ],
+            declarations: [
+                PageHomeComponent,
+                MatSpinnerComponent,
+                MatIconComponent,
+            ],
             imports: [
                 StoreModule.forRoot(appReducer),
                 MatInputModule,
@@ -36,7 +37,6 @@ describe("PageHomeComponent", () => {
             ],
             providers: [
                 { provide: MatDialog, useValue: matDialog },
-                { provide: ChannelsService, useValue: channelsService },
             ]
         })
         .compileComponents();

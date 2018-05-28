@@ -8,41 +8,48 @@ describe("Action - Channels", () => {
     beforeEach(async(() => {
     }));
 
-    it("should dispatch FETCHING_PUBLIC_CHANNEL_INFOS", async(() => {
-        expect(channelsActions.fetchingPublicChannelInfos()).toEqual({
-            type: channelsTypes.FETCHING_PUBLIC_CHANNEL_INFOS,
+    it("should dispatch FETCHING_CURRENT_CHANNEL_INFOS", async(() => {
+        expect(channelsActions.fetchingCurrentChannelInfos()).toEqual({
+            type: channelsTypes.FETCHING_CURRENT_CHANNEL_INFOS,
         });
     }));
 
-    it("should dispatch SUCCESS_FETCH_PUBLIC_CHANNEL_INFOS", async(() => {
-        expect(channelsActions.successFetchPublicChannelInfos(null)).toEqual({
-            type: channelsTypes.SUCCESS_FETCH_PUBLIC_CHANNEL_INFOS,
+    it("should dispatch SUCCESS_FETCH_CURRENT_CHANNEL_INFOS", async(() => {
+        expect(channelsActions.successFetchCurrentChannelInfos(null)).toEqual({
+            type: channelsTypes.SUCCESS_FETCH_CURRENT_CHANNEL_INFOS,
             payload: { data: null },
         });
     }));
 
-    it("should dispatch FAIL_FETCH_PUBLIC_CHANNEL_INFOS", async(() => {
-        expect(channelsActions.failFetchPublicChannelInfos()).toEqual({
-            type: channelsTypes.FAIL_FETCH_PUBLIC_CHANNEL_INFOS,
+    it("should dispatch FAIL_FETCH_CURRENT_CHANNEL_INFOS", async(() => {
+        expect(channelsActions.failFetchCurrentChannelInfos()).toEqual({
+            type: channelsTypes.FAIL_FETCH_CURRENT_CHANNEL_INFOS,
         });
     }));
 
-    it("should dispatch FETCHING_PUBLIC_CHANNEL_MESSAGES", async(() => {
-        expect(channelsActions.fetchingPublicChannelMsgs()).toEqual({
-            type: channelsTypes.FETCHING_PUBLIC_CHANNEL_MESSAGES
+    it("should dispatch FETCHING_CURRENT_CHANNEL_MESSAGES", async(() => {
+        expect(channelsActions.fetchingCurrentChannelMsgs()).toEqual({
+            type: channelsTypes.FETCHING_CURRENT_CHANNEL_MESSAGES
         });
     }));
 
-    it("should dispatch SUCCESS_FETCH_PUBLIC_CHANNEL_MESSAGES", async(() => {
-        expect(channelsActions.successFetchPublicChannelMsgs([])).toEqual({
-            type: channelsTypes.SUCCESS_FETCH_PUBLIC_CHANNEL_MESSAGES,
+    it("should dispatch SUCCESS_FETCH_CURRENT_CHANNEL_MESSAGES", async(() => {
+        expect(channelsActions.successFetchCurrentChannelMsgs([])).toEqual({
+            type: channelsTypes.SUCCESS_FETCH_CURRENT_CHANNEL_MESSAGES,
             payload: { data: [] }
         });
     }));
 
-    it("should dispatch FAIL_FETCH_PUBLIC_CHANNEL_MESSAGES", async(() => {
-        expect(channelsActions.failFetchPublicChannelMsgs()).toEqual({
-            type: channelsTypes.FAIL_FETCH_PUBLIC_CHANNEL_MESSAGES,
+    it("should dispatch FAIL_FETCH_CURRENT_CHANNEL_MESSAGES", async(() => {
+        expect(channelsActions.failFetchCurrentChannelMsgs()).toEqual({
+            type: channelsTypes.FAIL_FETCH_CURRENT_CHANNEL_MESSAGES,
+        });
+    }));
+
+    it("should dispatch SET_CHANNELS_URLS", async(() => {
+        expect(channelsActions.setChannelsUrlsList(["coucouURL"])).toEqual({
+            type: channelsTypes.SET_CHANNELS_URLS,
+            payload: { data: ["coucouURL"] }
         });
     }));
 });
