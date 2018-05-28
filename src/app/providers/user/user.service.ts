@@ -7,7 +7,6 @@ import { AppState } from "../../reducers";
 import { UserState, defaultUserState } from "../../reducers/user/user.reducer";
 import { fetchingUser, failedFetchUser, successFetchUser, logoutUser } from "../../actions/user/user.action";
 import { User } from "../../typings/User";
-import { ChannelsService } from "../channels/channels.service";
 
 @Injectable({
     providedIn: "root"
@@ -16,7 +15,7 @@ export class UserService {
     private static USER_STORE_KEY = "civispass_userId";
     private _userState: UserState;
 
-    constructor(private api: MainSendbird, private _state: Store<AppState>, private channelsService: ChannelsService) {
+    constructor(private sendbird: MainSendbird, private _state: Store<AppState>) {
         _state.select((state: AppState) => state)
             .subscribe((state: AppState) => {
                 this._userState = state.user;
@@ -42,23 +41,25 @@ export class UserService {
 
     async noAuthLogin(userId: string) {
         this._state.dispatch(fetchingUser());
-        const sb = await this.api.getSb();
+        const sb = await this.sendbird.getSb();
 
-        sb.connect(userId, (user: SendBirdUser, error: SendBirdError) => {
+        sb.connect(userId, async (user: SendBirdUser, error: SendBirdError) => {
             if (error) {
                 this._state.dispatch(failedFetchUser());
                 this.removeUserId();
             }
             this._state.dispatch(successFetchUser(user));
-            this.channelsService.fetchPublicChannelMetaData();
             this.storeUserId(user.userId);
+            const fetchedInfos = await this.sendbird.fetchCurrentOpenChannelInfos();
+            console.log("fetched infos", fetchedInfos);
+            const fetchedMessages = await this.sendbird.fetchCurrentOpenChannelMessages();
         });
     }
 
     async logoutUser() {
         this._state.dispatch(logoutUser());
         this.removeUserId();
-        const sb = await this.api.getSb();
+        const sb = await this.sendbird.getSb();
         sb.disconnect();
     }
 }

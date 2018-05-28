@@ -33,12 +33,12 @@ export class LoginBoxComponent {
         return this.form.errors !== null;
     }
 
-    async onSubmit(): Promise<boolean> {
+    onSubmit() {
         if (this.hasError) {
-            return false;
+            return;
         }
         this.dialogRef.close();
-        return await this.userService.noAuthLogin(this.form.value);
+        this.userService.noAuthLogin(this.form.value);
     }
 
 }

@@ -4,40 +4,47 @@ import * as channelsTypes from "../types/channels.type";
 import { User } from "../../typings/User";
 import { ChannelData } from "../../typings/ChannelInfo";
 
-export const fetchingPublicChannelMsgs = (): Action => {
+export const fetchingCurrentChannelMsgs = (): Action => {
     return {
-        type: channelsTypes.FETCHING_PUBLIC_CHANNEL_MESSAGES
+        type: channelsTypes.FETCHING_CURRENT_CHANNEL_MESSAGES
     };
 };
 
-export const successFetchPublicChannelMsgs = (data: Message[]): Action => {
+export const successFetchCurrentChannelMsgs = (data: Message[]): Action => {
     return {
-        type: channelsTypes.SUCCESS_FETCH_PUBLIC_CHANNEL_MESSAGES,
+        type: channelsTypes.SUCCESS_FETCH_CURRENT_CHANNEL_MESSAGES,
         payload: { data }
     };
 };
 
-export const failFetchPublicChannelMsgs = (): Action => {
+export const failFetchCurrentChannelMsgs = (): Action => {
     return {
-        type: channelsTypes.FAIL_FETCH_PUBLIC_CHANNEL_MESSAGES
+        type: channelsTypes.FAIL_FETCH_CURRENT_CHANNEL_MESSAGES
     };
 };
 
-export const fetchingPublicChannelInfos = (): Action => {
+export const fetchingCurrentChannelInfos = (): Action => {
     return {
-        type: channelsTypes.FETCHING_PUBLIC_CHANNEL_INFOS
+        type: channelsTypes.FETCHING_CURRENT_CHANNEL_INFOS
     };
 };
 
-export const successFetchPublicChannelInfos = (data: ChannelData): Action => {
+export const successFetchCurrentChannelInfos = (data: ChannelData): Action => {
     return {
-        type: channelsTypes.SUCCESS_FETCH_PUBLIC_CHANNEL_INFOS,
+        type: channelsTypes.SUCCESS_FETCH_CURRENT_CHANNEL_INFOS,
         payload: { data }
     };
 };
 
-export const failFetchPublicChannelInfos = (): Action => {
+export const failFetchCurrentChannelInfos = (): Action => {
     return {
-        type: channelsTypes.FAIL_FETCH_PUBLIC_CHANNEL_INFOS
+        type: channelsTypes.FAIL_FETCH_CURRENT_CHANNEL_INFOS
+    };
+};
+
+export const setChannelsUrlsList = (data: string[]): Action => {
+    return {
+        type: channelsTypes.SET_CHANNELS_URLS,
+        payload: { data },
     };
 };

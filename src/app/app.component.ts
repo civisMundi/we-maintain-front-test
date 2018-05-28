@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
     private snackbarRef: MatSnackBarRef<SimpleSnackBar> = null;
     constructor(public dialog: MatDialog, public userService: UserService, private _state: Store<AppState>, public snackBar: MatSnackBar) {}
 
-     ngOnInit() {
+    ngOnInit() {
         this._state
         .select((state: AppState) => state)
         .subscribe((state: AppState) => {
@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
             }
         });
         this.userService.restoreLocalUser();
-     }
+    }
 
     openDialog(): void {
         if (this.userState.isIdentified || this.userState.fetching) {

@@ -5,6 +5,7 @@ import { User } from "../../typings/User";
 import { ChannelData } from "../../typings/ChannelInfo";
 import { Message } from "../../typings/Message";
 
+
 export interface Channel {
     infos: {
         data: ChannelData;
@@ -14,13 +15,15 @@ export interface Channel {
         data: Message[];
         isFetching: boolean;
     };
+    entered: boolean;
 }
 
 export interface ChannelsState {
-    public: Channel;
+    current: Channel;
+    urls: string[];
 }
 export const defaultChannelsState: ChannelsState = {
-    public: {
+    current: {
         infos: {
             data: null,
             isFetching: false,
@@ -29,81 +32,93 @@ export const defaultChannelsState: ChannelsState = {
             data: [],
             isFetching: false,
         },
+        entered: false,
     },
+    urls: [],
 };
 
 export const channelsReducer: ActionReducer<ChannelsState> = (state: ChannelsState = defaultChannelsState, action: Action) => {
     const { payload } = action;
     switch (action.type) {
-        case channelsTypes.FETCHING_PUBLIC_CHANNEL_INFOS:
+        case channelsTypes.FETCHING_CURRENT_CHANNEL_INFOS:
             return {
                 ...state,
-                public: {
+                current: {
+                    ...state.current,
                     infos: {
-                        ...state.public.infos,
+                        ...state.current.infos,
                         isFetching: true,
                     },
-                    messages: state.public.messages,
+                    messages: state.current.messages,
                 }
             };
-        case channelsTypes.SUCCESS_FETCH_PUBLIC_CHANNEL_INFOS:
+        case channelsTypes.SUCCESS_FETCH_CURRENT_CHANNEL_INFOS:
             return {
                 ...state,
-                public: {
+                current: {
+                    ...state.current,
                     infos: {
-                        ...state.public.infos,
+                        ...state.current.infos,
                         data: {
-                            ...state.public.infos.data,
+                            ...state.current.infos.data,
                             ...payload.data,
                         },
                         isFetching: false,
                     },
-                    messages: state.public.messages,
+                    messages: state.current.messages,
                 }
             };
-        case channelsTypes.FAIL_FETCH_PUBLIC_CHANNEL_INFOS:
+        case channelsTypes.FAIL_FETCH_CURRENT_CHANNEL_INFOS:
             return {
                 ...state,
-                public: {
-                    ...state.public,
+                current: {
+                    ...state.current,
                     infos: {
-                        ...state.public.infos,
+                        ...state.current.infos,
                         isFetching: false,
                     },
                 }
             };
-        case channelsTypes.FETCHING_PUBLIC_CHANNEL_MESSAGES:
+        case channelsTypes.FETCHING_CURRENT_CHANNEL_MESSAGES:
             return {
                 ...state,
-                public: {
-                    infos: state.public.infos,
+                current: {
+                    ...state.current,
+                    infos: state.current.infos,
                     messages: {
-                        data: state.public.messages.data,
+                        ...state.current.messages,
+                        data: state.current.messages.data,
                         isFetching: true,
                     }
                 }
             };
-        case channelsTypes.SUCCESS_FETCH_PUBLIC_CHANNEL_MESSAGES:
+        case channelsTypes.SUCCESS_FETCH_CURRENT_CHANNEL_MESSAGES:
             return {
                 ...state,
-                public: {
-                   ...state.public,
+                current: {
+                    ...state.current,
                     messages: {
-                        data: state.public.messages.data.concat(payload.data),
+                        ...state.current.messages,
+                        data: state.current.messages.data.concat(payload.data),
                         isFetching: false,
                     }
                 }
             };
-        case channelsTypes.FAIL_FETCH_PUBLIC_CHANNEL_MESSAGES:
+        case channelsTypes.FAIL_FETCH_CURRENT_CHANNEL_MESSAGES:
             return {
                 ...state,
-                public: {
-                   ...state.public,
+                current: {
+                    ...state.current,
                     messages: {
-                        ...state.public.messages,
+                        ...state.current.messages,
                         isFetching: false,
                     }
                 }
+            };
+        case channelsTypes.SET_CHANNELS_URLS:
+            return {
+                ...state,
+                urls: payload.data,
             };
         default:
             return state;

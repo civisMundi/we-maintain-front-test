@@ -5,7 +5,9 @@ import { ChannelsState } from "../../reducers/channels/channels.reducer";
 import { Store } from "@ngrx/store";
 import { AppState } from "../../reducers";
 import { setSnackMsg } from "../../actions/notifications/notifications.action";
-import * channelsActions from "../../actions/channels/channels.action";
+import * as channelsActions from "../../actions/channels/channels.action";
+
+export const MAX_MESSAGES_PER_LOAD = 25;
 
 @Injectable({
     providedIn: "root"
@@ -14,7 +16,7 @@ export class MainSendbird {
     private static instance: SendBird.SendBirdInstance = null;
     private _userState: UserState;
     private _channelsState: ChannelsState;
-    private _sbChannels: Map<string, SendBird.OpenChannel> = new Map();
+    private _sbChannel: SendBird.OpenChannel;
 
     constructor(private _state: Store<AppState>) {
         _state.select((state: AppState) => state)
@@ -24,52 +26,107 @@ export class MainSendbird {
             });
     }
 
-    set openChannels(channels: SendBird.OpenChannel[]) {
-        channels.forEach((chan: SendBird.OpenChannel) => {
-            this._sbChannels.set(chan.url, chan);
-        });
-    }
-
-    enterChannel(channelUrl: string) {
-        if (!this._sbChannels.has(channelUrl)) {
-            return;
-        }
-        const channel: SendBird.OpenChannel = this._sbChannels.get(channelUrl);
-        channel.enter((response: SendBird.OpenChannel, error: SendBird.SendBirdError) => {
-            if (error) {
-                this._state.dispatch(setSnackMsg(`Failed to enter channel ${channelUrl}`));
-                console.warn("Failed to enter channel !", error);
-                return;
-            }
-            this._state.dispatch(setSnackMsg(`entered channel ${channelUrl}`));
-        });
-    }
-
-    sendMsgOnPublicChannel(message: string) {
-        const channelUrl = this._channelsState.public.infos.data.url;
-        if (!this._sbChannels.has(channelUrl)) {
-            this._state.dispatch(setSnackMsg(`Failed to post on channel #1`));
-            return;
-        }
-        this._state.dispatch(channelsActions.fetchingPublicChannelMsgs());
-        const channel: SendBird.OpenChannel = this._sbChannels.get(channelUrl);
-        channel.sendUserMessage(message, "", "", (msg: SendBird.UserMessage, error: SendBird.SendBirdError) => {
-            console.warn("sendUserMessage - error", error);
-            console.log("sendUserMessage - msg", msg);
-            if (error) {
-                this._state.dispatch(channelsActions.failFetchPublicChannelMsgs());
-                this._state.dispatch(setSnackMsg(`Failed to post on channel #2`));
-                return;
-            }
-            this._state.dispatch(channelsActions.successFetchPublicChannelMsgs([msg]));
-        });
-    }
-
     async getSb() {
         if (MainSendbird.instance === null) {
             MainSendbird.instance = await new SendBird({ appId: "544368C6-DF3B-4534-A79D-054B15F64845" });
         }
         // console.log("MainSendbird.instance", MainSendbird.instance);
         return MainSendbird.instance;
+    }
+
+    fetchAllOpenChannels(): Promise<boolean> {
+        return new Promise(async (resolve) => {
+            const sb = await this.getSb();
+            sb.OpenChannel.createOpenChannelListQuery()
+                .next((channels: SendBird.OpenChannel[], error: SendBird.SendBirdError) => {
+                    if (error || channels.length === 0) {
+                        console.warn("ERROR ON OPEN CHANNELS LIST", error);
+                        this._state.dispatch(setSnackMsg("Couldn't fetch open channels"));
+                        resolve(false);
+                    }
+                    this._state.dispatch(channelsActions.setChannelsUrlsList(channels.map(chan => chan.url)));
+                    resolve(true);
+                });
+        });
+    }
+
+    enterCurrentChannel() {
+        if (!this._sbChannel) {
+            return;
+        }
+        this._sbChannel.enter((response: SendBird.OpenChannel, error: SendBird.SendBirdError) => {
+            if (error) {
+                this._state.dispatch(setSnackMsg(`Failed to enter channel ${this._sbChannel.url}`));
+                console.warn("Failed to enter channel !", error);
+                return;
+            }
+            this._state.dispatch(setSnackMsg(`entered channel ${this._sbChannel.url}`));
+        });
+    }
+
+    sendMsgOnCurrentChannel(message: string) {
+        const channelUrl = this._channelsState.current.infos.data.url;
+        if (!this._sbChannel) {
+            this._state.dispatch(setSnackMsg(`Failed to post on channel #1`));
+            return;
+        }
+        this._state.dispatch(channelsActions.fetchingCurrentChannelMsgs());
+        this._sbChannel.sendUserMessage(message, "", "", (msg: SendBird.UserMessage, error: SendBird.SendBirdError) => {
+            if (error) {
+                console.warn("sendUserMessage - error", error);
+                this._state.dispatch(channelsActions.failFetchCurrentChannelMsgs());
+                this._state.dispatch(setSnackMsg(`Failed to post on channel #2`));
+                return;
+            }
+            console.log("sendUserMessage - msg", msg);
+            this._state.dispatch(channelsActions.successFetchCurrentChannelMsgs([msg]));
+        });
+    }
+
+    fetchCurrentOpenChannelInfos(): Promise<boolean> {
+        return new Promise(async (resolve) => {
+            const isCurrentChannelSet = this._channelsState.current.infos.data && this._channelsState.current.infos.data.url;
+            if (!isCurrentChannelSet && this._channelsState.urls.length === 0) {
+                await this.fetchAllOpenChannels();
+            }
+            if (this._channelsState.urls.length === 0) {
+                console.warn("No default fallback channel");
+                resolve(false);
+                return;
+            }
+            const channelUrl = isCurrentChannelSet ? this._channelsState.current.infos.data.url : this._channelsState.urls[0];
+            this._state.dispatch(channelsActions.fetchingCurrentChannelInfos());
+            const sb = await this.getSb();
+            sb.OpenChannel.getChannel(channelUrl, (channel: SendBird.OpenChannel, error: SendBird.SendBirdError) => {
+                if (error) {
+                    console.warn("Error on getChannel", error);
+                    this._state.dispatch(setSnackMsg("Couldn't fetch open channels"));
+                    this._state.dispatch(channelsActions.failFetchCurrentChannelInfos());
+                    resolve(false);
+                    return;
+                }
+                this._sbChannel = channel;
+                this._state.dispatch(channelsActions.successFetchCurrentChannelInfos(channel));
+                resolve(true);
+            });
+        });
+    }
+
+    fetchCurrentOpenChannelMessages(): Promise<boolean> {
+        return new Promise((resolve) => {
+            this._state.dispatch(channelsActions.fetchingCurrentChannelMsgs());
+            this._sbChannel.createPreviousMessageListQuery()
+                .load(MAX_MESSAGES_PER_LOAD, true, (messageList, error) => {
+                if (error) {
+                    console.warn("sendUserMessage - error", error);
+                    this._state.dispatch(channelsActions.failFetchCurrentChannelMsgs());
+                    this._state.dispatch(setSnackMsg(`Failed to retreive channel messages`));
+                    resolve(false);
+                    return;
+                }
+                this._state.dispatch(channelsActions.successFetchCurrentChannelMsgs(messageList));
+                resolve(true);
+            });
+        });
     }
 }
