@@ -11,4 +11,5 @@ export type Message = {
     mentionedUsers: Array<User>;
     createdAt: number;
     updatedAt: number;
+    _sender?: User;
 };
