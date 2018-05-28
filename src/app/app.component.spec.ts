@@ -9,8 +9,6 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { StoreModule } from "@ngrx/store";
 import { appReducer } from "./reducers";
 
-
-
 const matDialog: Partial<MatDialog> = {
     open: jasmine.createSpy(),
 };

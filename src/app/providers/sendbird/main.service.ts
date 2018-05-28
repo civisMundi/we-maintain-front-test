@@ -5,6 +5,7 @@ import { ChannelsState } from "../../reducers/channels/channels.reducer";
 import { Store } from "@ngrx/store";
 import { AppState } from "../../reducers";
 import { setSnackMsg } from "../../actions/notifications/notifications.action";
+import * channelsActions from "../../actions/channels/channels.action";
 
 @Injectable({
     providedIn: "root"
@@ -40,11 +41,29 @@ export class MainSendbird {
                 console.warn("Failed to enter channel !", error);
                 return;
             }
-            console.log();
             this._state.dispatch(setSnackMsg(`entered channel ${channelUrl}`));
         });
     }
 
+    sendMsgOnPublicChannel(message: string) {
+        const channelUrl = this._channelsState.public.infos.data.url;
+        if (!this._sbChannels.has(channelUrl)) {
+            this._state.dispatch(setSnackMsg(`Failed to post on channel #1`));
+            return;
+        }
+        this._state.dispatch(channelsActions.fetchingPublicChannelMsgs());
+        const channel: SendBird.OpenChannel = this._sbChannels.get(channelUrl);
+        channel.sendUserMessage(message, "", "", (msg: SendBird.UserMessage, error: SendBird.SendBirdError) => {
+            console.warn("sendUserMessage - error", error);
+            console.log("sendUserMessage - msg", msg);
+            if (error) {
+                this._state.dispatch(channelsActions.failFetchPublicChannelMsgs());
+                this._state.dispatch(setSnackMsg(`Failed to post on channel #2`));
+                return;
+            }
+            this._state.dispatch(channelsActions.successFetchPublicChannelMsgs([msg]));
+        });
+    }
 
     async getSb() {
         if (MainSendbird.instance === null) {

@@ -8,6 +8,7 @@ import { AppState } from "../../../reducers";
 import { ChannelsService } from "../../../providers/channels/channels.service";
 import { defaultUserState, UserState } from "../../../reducers/user/user.reducer";
 import { LoginBoxComponent } from "../../component/login-box/login-box.component";
+import { MainSendbird } from "../../../providers/sendbird/main.service";
 
 @Component({
     selector: "app-page-home",
@@ -17,10 +18,16 @@ import { LoginBoxComponent } from "../../component/login-box/login-box.component
 export class PageHomeComponent implements OnInit {
     public channel: Channel;
     public userState: UserState;
+    public currentUserMessage: string;
 
-    constructor(public dialog: MatDialog, private _state: Store<AppState>, private channelsService: ChannelsService) {}
+    constructor(
+        public dialog: MatDialog,
+        private _state: Store<AppState>,
+        private channelsService: ChannelsService,
+        private sendbird: MainSendbird) {}
 
     ngOnInit() {
+        this.currentUserMessage = "";
         this._state
             .select((state: AppState) => state)
             .subscribe((state: AppState) => {
@@ -36,5 +43,23 @@ export class PageHomeComponent implements OnInit {
         const dialogRef = this.dialog.open(LoginBoxComponent, {
             id: "login-dialog-container"
         });
+    }
+
+    isMsgValid(): boolean {
+        return this.currentUserMessage.trim().length > 0;
+    }
+
+    cleanMsg() {
+        this.currentUserMessage = this.currentUserMessage.trim();
+    }
+
+    sendMsg(): void {
+        if (!this.isMsgValid() || this.channel.messages.isFetching) {
+            return;
+        }
+        this.cleanMsg();
+        console.log("coucou api call:: ", this.currentUserMessage);
+        this.sendbird.sendMsgOnPublicChannel(this.currentUserMessage);
+        this.currentUserMessage = "";
     }
 }
