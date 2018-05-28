@@ -50,21 +50,30 @@ export class MainSendbird {
         });
     }
 
-    enterCurrentChannel() {
-        if (!this._sbChannel) {
-            return;
-        }
-        this._sbChannel.enter((response: SendBird.OpenChannel, error: SendBird.SendBirdError) => {
-            if (error) {
-                this._state.dispatch(setSnackMsg(`Failed to enter channel ${this._sbChannel.url}`));
-                console.warn("Failed to enter channel !", error);
+    enterCurrentChannel(): Promise<boolean> {
+        return new Promise((resolve) => {
+            if (!this._sbChannel) {
                 return;
             }
-            this._state.dispatch(setSnackMsg(`entered channel ${this._sbChannel.url}`));
+            this._sbChannel.enter((response: SendBird.OpenChannel, error: SendBird.SendBirdError) => {
+                if (error) {
+                    this._state.dispatch(setSnackMsg(`Failed to enter channel ${this._sbChannel.url}`));
+                    console.warn("Failed to enter channel !", error);
+                    resolve(false);
+                    return;
+                }
+                this._state.dispatch(channelsActions.toggleEnteredChannel());
+                this._state.dispatch(setSnackMsg(`entered channel ${this._sbChannel.url}`));
+                resolve(true);
+            });
         });
     }
 
-    sendMsgOnCurrentChannel(message: string) {
+    async sendMsgOnCurrentChannel(message: string) {
+        if (!this._channelsState.current.entered && !await this.enterCurrentChannel()) {
+            return;
+        }
+        // @CHECK FOR ENTERED STATE
         const channelUrl = this._channelsState.current.infos.data.url;
         if (!this._sbChannel) {
             this._state.dispatch(setSnackMsg(`Failed to post on channel #1`));
@@ -78,7 +87,6 @@ export class MainSendbird {
                 this._state.dispatch(setSnackMsg(`Failed to post on channel #2`));
                 return;
             }
-            console.log("sendUserMessage - msg", msg);
             this._state.dispatch(channelsActions.successFetchCurrentChannelMsgs([msg]));
         });
     }

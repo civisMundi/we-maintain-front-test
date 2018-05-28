@@ -120,6 +120,14 @@ export const channelsReducer: ActionReducer<ChannelsState> = (state: ChannelsSta
                 ...state,
                 urls: payload.data,
             };
+        case channelsTypes.TOGGLE_ENTERED_CURRENT_CHANNEL:
+            return {
+                ...state,
+                current: {
+                    ...state.current,
+                    entered: !state.current.entered
+                }
+            };
         default:
             return state;
     }
