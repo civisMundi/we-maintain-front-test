@@ -1,13 +1,14 @@
 import { Injectable } from "@angular/core";
 import * as SendBird from "sendbird";
 import { UserState, defaultUserState } from "../../reducers/user/user.reducer";
-import { ChannelsState } from "../../reducers/channels/channels.reducer";
 import { Store } from "@ngrx/store";
+import { ChannelsState } from "../../reducers/channels/channels.reducer";
 import { AppState } from "../../reducers";
 import { setSnackMsg } from "../../actions/notifications/notifications.action";
 import * as channelsActions from "../../actions/channels/channels.action";
 
 export const MAX_MESSAGES_PER_LOAD = 25;
+export const MAX_CHANNELS_HANDLER = 10;
 
 @Injectable({
     providedIn: "root"
@@ -17,6 +18,8 @@ export class MainSendbird {
     private _userState: UserState;
     private _channelsState: ChannelsState;
     private _sbChannel: SendBird.OpenChannel;
+    private _channelHandler: SendBird.ChannelHandler;
+    private __channelHandlerIds: { id: string, used: boolean}[] = [];
 
     constructor(private _state: Store<AppState>) {
         _state.select((state: AppState) => state)
@@ -24,14 +27,44 @@ export class MainSendbird {
                 this._channelsState = state.channels;
                 this._userState = state.user ? state.user : defaultUserState;
             });
+        for (let i = 0; i < MAX_CHANNELS_HANDLER; i++) {
+            this.__channelHandlerIds[i] = {
+                id: `CHANNEL-HANDLER-${i}-${Math.random()}`,
+                used: false,
+            };
+        }
+    }
+
+    private async initMessageHandler() {
+        const sb = await this.getSb();
+        this._channelHandler = new sb.ChannelHandler();
+        // tslint:disable-next-line:max-line-length
+        this._channelHandler.onMessageReceived = (pingedChannel: SendBird.BaseChannel, message: SendBird.BaseMessageInstance) => {
+            if (pingedChannel.url === this._sbChannel.url) {
+                this._state.dispatch(channelsActions.successFetchCurrentChannelMsgs([message]));
+            }
+        };
+        sb.addChannelHandler(await this.getHandlerID(), this._channelHandler);
+        return;
     }
 
     async getSb() {
         if (MainSendbird.instance === null) {
             MainSendbird.instance = await new SendBird({ appId: "544368C6-DF3B-4534-A79D-054B15F64845" });
+            this.initMessageHandler();
         }
         // console.log("MainSendbird.instance", MainSendbird.instance);
         return MainSendbird.instance;
+    }
+
+    getHandlerID(): string {
+        const obj = this.__channelHandlerIds.find(handler => !handler.used);
+        if (!!obj) {
+            return obj.id;
+        } else {
+            // @TODO handle no ids left scenario
+        }
+
     }
 
     fetchAllOpenChannels(): Promise<boolean> {

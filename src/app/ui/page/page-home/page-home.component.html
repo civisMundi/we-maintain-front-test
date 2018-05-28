@@ -1,7 +1,7 @@
 <div class="full-width full-height flex-column">
     <button *ngIf="!userState.isIdentified" (click)="openDialog()" mat-raised-button>Choose a name</button>
     <div *ngIf="userState.isIdentified" class="civis-channel-container full-width full-height flex-row margin-auto">
-        <div class="full-height full-width margin-auto flex-column justify-content-end channel-messages">
+        <div class="full-height margin-auto flex-column justify-content-end channel-messages">
             <mat-spinner *ngIf="channel.messages.isFetching" diameter="40" color="primary"></mat-spinner>
             <div class="full-width full-height flex-column justify-content-end align-items-start">
                 <p *ngIf="channel.messages.data.length == 0; else messagesList">This channel has no messages yet</p>
@@ -16,7 +16,7 @@
             </form>
 
         </div>
-        <div class="full-height full-width margin-auto flex-column channel-infos justify-content-start">
+        <div class="full-height margin-auto flex-column channel-infos justify-content-start">
             <mat-spinner *ngIf="channel.infos.isFetching" diameter="40" color="primary"></mat-spinner>
             <div *ngIf="channel.infos.data != null" class="channel-infos-banner relative full-width full-height flex-column">
                 <img class="absolute channel-infos-banner-img" [src]="channel.infos.data.coverUrl" alt="channel image">

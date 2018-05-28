@@ -1,5 +1,5 @@
-<div class="fade-in one flex-row align-items-start message-container">
-	<div>
+<div *ngIf="message" class="fade-in one flex-row align-items-start message-container">
+	<div class="full-height">
 		<img class="user-icon" *ngIf="message._sender && message._sender.profileUrl; else defaultUserIcon" [src]="message._sender.profileUrl" alt="user image">
 	</div>
 	<div class="data-container flex-column">

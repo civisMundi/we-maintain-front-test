@@ -5,17 +5,17 @@
 }
 
 .civis-channel-container {
-    max-width: 1300px;
+    max-width: 1920px;
 }
 
 .civis-channel-container .channel-messages {
-    max-width: 1000px;
+    width: 80%;
     max-height: 100%;
     overflow-y: auto;
 }
 
 .civis-channel-container .channel-infos {
-    max-width: 300px;
+    width: 20%;
     -webkit-box-shadow: -3px 2px 5px 0px rgba(63,81,181,1);
     -moz-box-shadow: -3px 2px 5px 0px rgba(63,81,181,1);
     box-shadow: -3px 2px 5px 0px rgba(63,81,181,1);
