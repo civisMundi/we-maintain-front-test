@@ -52,4 +52,10 @@ describe("Action - Channels", () => {
             payload: { data: ["coucouURL"] }
         });
     }));
+
+    it("should dispatch TOGGLE_ENTERED_CURRENT_CHANNEL", async(() => {
+        expect(channelsActions.toggleEnteredChannel()).toEqual({
+            type: channelsTypes.TOGGLE_ENTERED_CURRENT_CHANNEL,
+        });
+    }));
 });

@@ -48,3 +48,9 @@ export const setChannelsUrlsList = (data: string[]): Action => {
         payload: { data },
     };
 };
+
+export const toggleEnteredChannel = (): Action => {
+    return {
+        type: channelsTypes.TOGGLE_ENTERED_CURRENT_CHANNEL
+    };
+};
