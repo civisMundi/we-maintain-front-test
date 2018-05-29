@@ -16,9 +16,6 @@
 
 .civis-channel-container .channel-infos {
     width: 20%;
-    -webkit-box-shadow: -3px 2px 5px 0px rgba(63,81,181,1);
-    -moz-box-shadow: -3px 2px 5px 0px rgba(63,81,181,1);
-    box-shadow: -3px 2px 5px 0px rgba(63,81,181,1);
 }
 
 .civis-channel-container .channel-infos .channel-infos-banner{
@@ -54,11 +51,20 @@
     height: calc(100% - 100px);
     overflow-y: auto;
 }
+.empty-channel-warning {
+    top: 50%;
+    left: 0;
+}
 .user-message-form {
     bottom: 0;
     left: 0;
     background: rgba(8, 8, 8, .1);
     padding: 16px 0;
+}
+#fetching-messages-spinner {
+    position: absolute;
+    top: 10px;
+    left: calc(50% - 20px);
 }
 #user-current-message {
     max-height: 100px;

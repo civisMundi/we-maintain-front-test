@@ -102,11 +102,10 @@ export class MainSendbird {
         });
     }
 
-    async sendMsgOnCurrentChannel(message: string) {
+    async sendMsgOnCurrentChannel(message: string): Promise<boolean> {
         if (!this._channelsState.current.entered && !await this.enterCurrentChannel()) {
             return;
         }
-        // @CHECK FOR ENTERED STATE
         const channelUrl = this._channelsState.current.infos.data.url;
         if (!this._sbChannel) {
             this._state.dispatch(setSnackMsg(`Failed to post on channel #1`));
