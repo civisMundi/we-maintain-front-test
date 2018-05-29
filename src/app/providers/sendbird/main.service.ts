@@ -169,4 +169,16 @@ export class MainSendbird {
             });
         });
     }
+
+    fetchCurrentOpenChannelUsers() {
+        const participantListQuery = this._sbChannel.createParticipantListQuery();
+
+        participantListQuery.next((users: SendBird.User[], error) => {
+            if (error) {
+                console.warn("fetchCurrentOpenChannelUsers Error:: ", error);
+                return;
+            }
+            this._state.dispatch(channelsActions.addLoggedInUsersOnCurrentChannel(users));
+        });
+    }
 }

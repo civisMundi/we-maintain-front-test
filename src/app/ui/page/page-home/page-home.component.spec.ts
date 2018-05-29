@@ -1,13 +1,11 @@
-import { Component } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { StoreModule } from "@ngrx/store";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { MatInputModule } from "@angular/material/input";
-import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 import { PageHomeComponent } from "./page-home.component";
-import { MessageComponent } from "../../component/message/message.component";
 import { appReducer } from "../../../reducers";
 import { MatDialog } from "@angular/material";
+import { Channel } from "../../../reducers/channels/channels.reducer";
 
 const matDialog: Partial<MatDialog> = {
     open: jasmine.createSpy(),
@@ -19,6 +17,15 @@ class MatSpinnerComponent { }
 @Component({ selector: "mat-icon", template: "" }) // tslint:disable-line
 class MatIconComponent { }
 
+@Component({ selector: "app-channel-infos", template: "" }) // tslint:disable-line
+class ChannelInfosComponent {
+    @Input() channel: Channel;
+}
+@Component({ selector: "app-channel-messages", template: "" }) // tslint:disable-line
+class ChannelMessagesComponent {
+    @Input() channel: Channel;
+}
+
 describe("PageHomeComponent", () => {
     let component: PageHomeComponent;
     let fixture: ComponentFixture<PageHomeComponent>;
@@ -27,15 +34,11 @@ describe("PageHomeComponent", () => {
         TestBed.configureTestingModule({
             declarations: [
                 PageHomeComponent,
-                MessageComponent,
-                MatSpinnerComponent,
-                MatIconComponent,
+                ChannelInfosComponent,
+                ChannelMessagesComponent,
             ],
             imports: [
                 StoreModule.forRoot(appReducer),
-                MatInputModule,
-                ReactiveFormsModule,
-                FormsModule,
             ],
             providers: [
                 { provide: MatDialog, useValue: matDialog },

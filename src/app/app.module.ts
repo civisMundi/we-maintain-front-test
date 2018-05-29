@@ -14,6 +14,8 @@ import { AppComponent } from "./app.component";
 import { PageHomeComponent } from "./ui/page/page-home/page-home.component";
 import { LoginBoxComponent } from "./ui/component/login-box/login-box.component";
 import { MessageComponent } from "./ui/component/message/message.component";
+import { ChannelInfosComponent } from "./ui/component/channel-infos/channel-infos.component";
+import { ChannelMessagesComponent } from "./ui/component/channel-messages/channel-messages.component";
 
 import { MainSendbird } from "./providers/sendbird/main.service";
 import { UserService } from "./providers/user/user.service";
@@ -23,7 +25,9 @@ import { UserService } from "./providers/user/user.service";
         AppComponent,
         PageHomeComponent,
         LoginBoxComponent,
-        MessageComponent
+        MessageComponent,
+        ChannelInfosComponent,
+        ChannelMessagesComponent
     ],
     imports: [
         StoreModule.forRoot(Reducers),

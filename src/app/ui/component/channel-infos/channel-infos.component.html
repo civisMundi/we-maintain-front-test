@@ -1,0 +1,8 @@
+<div *ngIf="channel" class="full-height full-width margin-auto flex-column channel-infos justify-content-start">
+    <mat-spinner *ngIf="channel.infos.isFetching" diameter="40" color="primary"></mat-spinner>
+    <div *ngIf="channel.infos.data != null" class="channel-infos-banner relative full-width full-height flex-column">
+        <img class="absolute channel-infos-banner-img" [src]="channel.infos.data.coverUrl" alt="channel image">
+        <h3 class="channel-infos-banner-title">{{ channel.infos.data.name }}</h3>
+        <p class="channel-infos-banner-date">{{ channel.infos.data.createdAt | date }}</p>
+    </div>
+</div>

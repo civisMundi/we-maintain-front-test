@@ -28,8 +28,6 @@ export class MessageComponent implements OnInit {
         return Date.now() - this.message.createdAt > 1000 * 60 * 60 * 24;
     }
 
-
     ngOnInit() {
     }
-
 }

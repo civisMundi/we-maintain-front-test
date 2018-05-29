@@ -1,0 +1,29 @@
+
+.channel-infos .channel-infos-banner{
+    max-height: 200px;
+    overflow: hidden;
+    background-color: rgba(8, 8, 8, .3)
+}
+
+.channel-infos .channel-infos-banner .channel-infos-banner-img{
+    height: 100%;
+    width: auto;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    opacity: .3;
+}
+
+.channel-infos .channel-infos-banner .channel-infos-banner-title{
+    color: #fff;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+}
+
+.channel-infos .channel-infos-banner .channel-infos-banner-date
+{
+    color: #fff;
+    text-transform: capitalize;
+    font-style: italic;
+    font-size: 11px;
+}
