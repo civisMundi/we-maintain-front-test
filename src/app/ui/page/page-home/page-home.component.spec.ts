@@ -5,6 +5,7 @@ import { MatInputModule } from "@angular/material/input";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 import { PageHomeComponent } from "./page-home.component";
+import { MessageComponent } from "../../component/message/message.component";
 import { appReducer } from "../../../reducers";
 import { MatDialog } from "@angular/material";
 
@@ -26,6 +27,7 @@ describe("PageHomeComponent", () => {
         TestBed.configureTestingModule({
             declarations: [
                 PageHomeComponent,
+                MessageComponent,
                 MatSpinnerComponent,
                 MatIconComponent,
             ],

@@ -34,7 +34,7 @@ export class PageHomeComponent implements OnInit, OnDestroy, DoCheck {
             .subscribe((state: AppState) => {
                 const newMessagesNumber = state.channels ? state.channels.current.messages.data.length : 0;
                 if (this.channel && newMessagesNumber > this.channel.messages.data.length) {
-                    if (this.isWrapperScrolledDown()) {
+                    if (this.isWrapperScrolledDownEnough()) {
                         this.delayScrollDown();
                     } else {
                         if (this.firstMessagesHaveLoaded) {
@@ -47,10 +47,13 @@ export class PageHomeComponent implements OnInit, OnDestroy, DoCheck {
             });
     }
 
-    isWrapperScrolledDown(): boolean {
+    isWrapperScrolledDownEnough(): boolean {
         if (this.scrollableWrapper) {
             const el = this.scrollableWrapper.nativeElement;
-            return el.scrollHeight - el.scrollTop < 450;
+            if (el.scrollTop === 0) {
+                return false;
+            }
+            return (el.scrollHeight - el.scrollTop) < el.parentNode.scrollHeight;
         }
         return true;
     }
