@@ -3,18 +3,19 @@
     <div *ngIf="userState.isIdentified" class="civis-channel-container full-width full-height flex-row margin-auto">
         <div class="full-height margin-auto flex-column justify-content-end channel-messages">
             <mat-spinner *ngIf="channel.messages.isFetching" diameter="40" color="primary"></mat-spinner>
-            <div class="full-width full-height flex-column justify-content-end align-items-start">
-                <p *ngIf="channel.messages.data.length == 0; else messagesList">This channel has no messages yet</p>
+            <div class="full-width full-height flex-column justify-content-end align-items-start relative">
+                <div class="full-height absolute full-width absolute-msg-container">
+                    <p *ngIf="channel.messages.data.length == 0; else messagesList">This channel has no messages yet</p>
+                </div>
+                <form class="asbolute user-message-form full-width flex-row">
+                    <mat-form-field id="mat-form-field-textarea" class="full-width">
+                        <textarea name="userMsg" id="user-current-message" [matTextareaAutosize] matInput placeholder="Your message" [(ngModel)]="currentUserMessage"></textarea>
+                    </mat-form-field>
+                    <button (click)="sendMsg()" [disabled]="!isMsgValid() || channel.messages.isFetching" mat-icon-button color="primary">
+                        <mat-icon aria-label="Send msg">send</mat-icon>
+                    </button>
+                </form>
             </div>
-            <form class="user-message-form full-width flex-row">
-                <mat-form-field id="mat-form-field-textarea" class="full-width">
-                    <textarea name="userMsg" id="user-current-message" [matTextareaAutosize] matInput placeholder="Your message" [(ngModel)]="currentUserMessage"></textarea>
-                </mat-form-field>
-                <button (click)="sendMsg()" [disabled]="!isMsgValid() || channel.messages.isFetching" mat-icon-button color="primary">
-                    <mat-icon aria-label="Send msg">send</mat-icon>
-                </button>
-            </form>
-
         </div>
         <div class="full-height margin-auto flex-column channel-infos justify-content-start">
             <mat-spinner *ngIf="channel.infos.isFetching" diameter="40" color="primary"></mat-spinner>
