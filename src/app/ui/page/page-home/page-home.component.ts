@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild, OnChanges, DoCheck } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { DomSanitizer } from "@angular/platform-browser";
@@ -14,10 +14,13 @@ import { MainSendbird } from "../../../providers/sendbird/main.service";
     templateUrl: "./page-home.component.html",
     styleUrls: ["./page-home.component.css"]
 })
-export class PageHomeComponent implements OnInit, OnDestroy {
+export class PageHomeComponent implements OnInit, OnDestroy, DoCheck {
     public channel: Channel;
     public userState: UserState;
     public currentUserMessage: string;
+    @ViewChild("scrollableWrapper") scrollableWrapper: ElementRef;
+    public previousMsgsNumber = 0;
+    private firstMessagesHaveLoaded = false;
 
     constructor(
         public dialog: MatDialog,
@@ -29,9 +32,54 @@ export class PageHomeComponent implements OnInit, OnDestroy {
         this._state
             .select((state: AppState) => state)
             .subscribe((state: AppState) => {
+                const newMessagesNumber = state.channels ? state.channels.current.messages.data.length : 0;
+                if (this.channel && newMessagesNumber > this.channel.messages.data.length) {
+                    if (this.isWrapperScrolledDown()) {
+                        this.delayScrollDown();
+                    } else {
+                        if (this.firstMessagesHaveLoaded) {
+                            this.showNewMessageNotif();
+                        }
+                    }
+                }
                 this.channel = state.channels ? state.channels.current : defaultChannelsState.current;
                 this.userState = state.user ? state.user : defaultUserState;
             });
+    }
+
+    isWrapperScrolledDown(): boolean {
+        if (this.scrollableWrapper) {
+            const el = this.scrollableWrapper.nativeElement;
+            return el.scrollHeight - el.scrollTop < 450;
+        }
+        return true;
+    }
+
+    showNewMessageNotif() {
+        // @TODO
+        console.log("showing new message notif !");
+    }
+
+    scrollToBottom(): void {
+        if (this.scrollableWrapper) {
+            const el = this.scrollableWrapper.nativeElement;
+            el.scrollTop = el.scrollHeight;
+        }
+    }
+
+    delayScrollDown() {
+        setTimeout(this.scrollToBottom.bind(this), 500);
+    }
+
+    ngDoCheck(): void {
+        if (!this.channel) {
+            return;
+        }
+        if (this.previousMsgsNumber === 0 && this.channel.messages.data.length > 0 && this.userState.isIdentified) {
+            this.previousMsgsNumber = this.channel.messages.data.length;
+            this.delayScrollDown();
+            this.firstMessagesHaveLoaded = true;
+        }
     }
 
     openDialog(): void {
@@ -51,12 +99,12 @@ export class PageHomeComponent implements OnInit, OnDestroy {
         this.currentUserMessage = this.currentUserMessage.trim();
     }
 
-    sendMsg(): void {
+    sendMsg() {
         if (!this.isMsgValid() || this.channel.messages.isFetching) {
             return;
         }
         this.cleanMsg();
-        this.sendbird.sendMsgOnCurrentChannel(this.currentUserMessage);
+        const msgIsSent = this.sendbird.sendMsgOnCurrentChannel(this.currentUserMessage);
         this.currentUserMessage = "";
     }
 

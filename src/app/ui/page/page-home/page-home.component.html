@@ -2,10 +2,10 @@
     <button *ngIf="!userState.isIdentified" (click)="openDialog()" mat-raised-button>Choose a name</button>
     <div *ngIf="userState.isIdentified" class="civis-channel-container full-width full-height flex-row margin-auto">
         <div class="full-height margin-auto flex-column justify-content-end channel-messages">
-            <mat-spinner *ngIf="channel.messages.isFetching" diameter="40" color="primary"></mat-spinner>
             <div class="full-width full-height flex-column justify-content-end align-items-start relative">
-                <div class="full-height absolute full-width absolute-msg-container">
-                    <p *ngIf="channel.messages.data.length == 0; else messagesList">This channel has no messages yet</p>
+                <mat-spinner id="fetching-messages-spinner" *ngIf="channel.messages.isFetching" diameter="40" color="primary"></mat-spinner>
+                <div #scrollableWrapper id="scrollableWrapper" class="full-height absolute full-width absolute-msg-container">
+                    <p class="absolute empty-channel-warning full-width text-center" *ngIf="channel.messages.data.length == 0; else messagesList">This channel has no messages yet</p>
                 </div>
                 <form class="asbolute user-message-form full-width flex-row">
                     <mat-form-field id="mat-form-field-textarea" class="full-width">
