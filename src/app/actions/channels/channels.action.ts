@@ -54,3 +54,17 @@ export const toggleEnteredChannel = (): Action => {
         type: channelsTypes.TOGGLE_ENTERED_CURRENT_CHANNEL
     };
 };
+
+export const addLoggedInUsersOnCurrentChannel = (users: User[]): Action => {
+    return {
+        type: channelsTypes.ADD_CURRENT_CHANNEL_LOGGEDIN_USERS,
+        payload: { data: users },
+    };
+};
+
+export const removeLoggedInUsersOnCurrentChannel = (userIds: string[]): Action => {
+    return {
+        type: channelsTypes.REMOVE_CURRENT_CHANNEL_LOGGEDIN_USERS,
+        payload: { data: userIds },
+    };
+};

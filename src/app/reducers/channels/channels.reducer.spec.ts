@@ -15,6 +15,9 @@ export const defaultState: ChannelsState = {
             isFetching: false,
         },
         entered: false,
+        users: {
+            loggedIn: [],
+        },
     },
     urls: [],
 };
@@ -196,6 +199,78 @@ describe("Reducer - Channels", () => {
                 ...defaultState.current,
                 entered: !defaultState.current.entered
             }
+        });
+    }));
+
+    it("should ADD_CURRENT_CHANNEL_LOGGEDIN_USERS", async(() => {
+        const action: Action = {
+            type: channelsTypes.ADD_CURRENT_CHANNEL_LOGGEDIN_USERS,
+            payload: {
+                data: [{
+                    userId: "coucou",
+                    nickname: "coucou",
+                    profileUrl: "coucou",
+                    metaData: {},
+                    connectionStatus: "coucou",
+                    lastSeenAt: "coucou",
+                    isActive: true,
+                    friendDiscoveryKey: "",
+                    friendName: "",
+            }]},
+        };
+        expect(channelsReducer(undefined, action)).toEqual({
+            ...defaultState,
+            current: {
+                ...defaultState.current,
+                users: {
+                    loggedIn: [{
+                        userId: "coucou",
+                        nickname: "coucou",
+                        profileUrl: "coucou",
+                        metaData: {},
+                        connectionStatus: "coucou",
+                        lastSeenAt: "coucou",
+                        isActive: true,
+                        friendDiscoveryKey: "",
+                        friendName: "",
+                    }],
+                },
+            },
+        });
+    }));
+
+    it("should REMOVE_CURRENT_CHANNEL_LOGGEDIN_USERS", async(() => {
+        const modifiedState: ChannelsState = {
+            ...defaultState,
+            current: {
+                ...defaultState.current,
+                users: {
+                    loggedIn: [{
+                        userId: "coucou",
+                        nickname: "coucou",
+                        profileUrl: "coucou",
+                        metaData: {},
+                        connectionStatus: "coucou",
+                        lastSeenAt: "coucou",
+                        isActive: true,
+                        friendDiscoveryKey: "",
+                        friendName: "",
+                    }],
+                },
+            },
+        };
+        const action: Action = {
+            type: channelsTypes.REMOVE_CURRENT_CHANNEL_LOGGEDIN_USERS,
+            payload: { data: ["coucou"] },
+        };
+        expect(channelsReducer(modifiedState, action)).toEqual({
+            ...defaultState,
+            current: {
+                ...defaultState.current,
+                users: {
+                    loggedIn: [],
+                },
+            },
         });
     }));
 });
