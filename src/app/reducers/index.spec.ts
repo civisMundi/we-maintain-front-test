@@ -1,14 +1,12 @@
 import { Component } from "@angular/core";
 import { async } from "@angular/core/testing";
 import { appReducer, AppState } from "./index";
-import { defaultMessagesState } from "./messages/messages.reducer";
 import { defaultUserState } from "./user/user.reducer";
 import { defaultChannelsState } from "./channels/channels.reducer";
 import { defaultNotificationsState } from "./notifications/notifications.reducer";
 import { Action } from "../typings/Action";
 
 export const defaultState: AppState = {
-    messages: defaultMessagesState,
     user: defaultUserState,
     channels: defaultChannelsState,
     notifs: defaultNotificationsState,

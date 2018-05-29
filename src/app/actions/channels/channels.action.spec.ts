@@ -58,4 +58,39 @@ describe("Action - Channels", () => {
             type: channelsTypes.TOGGLE_ENTERED_CURRENT_CHANNEL,
         });
     }));
+
+    it("should dispatch ADD_CURRENT_CHANNEL_LOGGEDIN_USERS", async(() => {
+        expect(channelsActions.addLoggedInUsersOnCurrentChannel([{
+            userId: "coucou",
+            nickname: "coucou",
+            profileUrl: "coucou",
+            metaData: {},
+            connectionStatus: "coucou",
+            lastSeenAt: "coucou",
+            isActive: true,
+            friendDiscoveryKey: "",
+            friendName: "",
+        }])).toEqual({
+            type: channelsTypes.ADD_CURRENT_CHANNEL_LOGGEDIN_USERS,
+            payload: {
+                data: [{
+                    userId: "coucou",
+                    nickname: "coucou",
+                    profileUrl: "coucou",
+                    metaData: {},
+                    connectionStatus: "coucou",
+                    lastSeenAt: "coucou",
+                    isActive: true,
+                    friendDiscoveryKey: "",
+                    friendName: "",
+                }]}
+        });
+    }));
+
+    it("should dispatch REMOVE_CURRENT_CHANNEL_LOGGEDIN_USERS", async(() => {
+        expect(channelsActions.removeLoggedInUsersOnCurrentChannel(["id1", "id2"])).toEqual({
+            type: channelsTypes.REMOVE_CURRENT_CHANNEL_LOGGEDIN_USERS,
+            payload: { data: ["id1", "id2"] },
+        });
+    }));
 });

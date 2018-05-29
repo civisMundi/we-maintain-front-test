@@ -5,7 +5,6 @@ import { User } from "../../typings/User";
 import { ChannelData } from "../../typings/ChannelInfo";
 import { Message } from "../../typings/Message";
 
-
 export interface Channel {
     infos: {
         data: ChannelData;
@@ -16,6 +15,9 @@ export interface Channel {
         isFetching: boolean;
     };
     entered: boolean;
+    users: {
+        loggedIn: User[];
+    };
 }
 
 export interface ChannelsState {
@@ -33,6 +35,9 @@ export const defaultChannelsState: ChannelsState = {
             isFetching: false,
         },
         entered: false,
+        users: {
+            loggedIn: [],
+        },
     },
     urls: [],
 };
@@ -126,6 +131,32 @@ export const channelsReducer: ActionReducer<ChannelsState> = (state: ChannelsSta
                 current: {
                     ...state.current,
                     entered: !state.current.entered
+                }
+            };
+        case channelsTypes.ADD_CURRENT_CHANNEL_LOGGEDIN_USERS:
+            return {
+                ...state,
+                current: {
+                    ...state.current,
+                    users: {
+                        loggedIn: state.current.users.loggedIn
+                            .filter(oldUser =>
+                                !payload.data.find(newUser => oldUser.userId === newUser.userId)
+                            ).concat(payload.data),
+                    },
+                }
+            };
+        case channelsTypes.REMOVE_CURRENT_CHANNEL_LOGGEDIN_USERS:
+            return {
+                ...state,
+                current: {
+                    ...state.current,
+                    users: {
+                        loggedIn: state.current.users.loggedIn
+                            .filter(oldUser =>
+                                !!!payload.data.find(userIdToDelete => oldUser.userId === userIdToDelete)
+                            ),
+                    },
                 }
             };
         default:
