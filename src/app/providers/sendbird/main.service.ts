@@ -229,4 +229,8 @@ export class MainSendbird {
             }
         });
     }
+
+    fetchMoreOpenChannelMessages() {
+        // @TODO https://docs.sendbird.com/javascript#open_channel_3_loading_previous_messages
+    }
 }

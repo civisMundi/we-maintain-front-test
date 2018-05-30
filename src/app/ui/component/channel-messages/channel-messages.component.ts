@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef, DoCheck } from "@angul
 import { Channel, defaultChannelsState } from "../../../reducers/channels/channels.reducer";
 import { Store } from "@ngrx/store";
 import { AppState } from "../../../reducers";
-import { MainSendbird } from "../../../providers/sendbird/main.service";
+import { MainSendbird, MAX_MESSAGES_PER_LOAD } from "../../../providers/sendbird/main.service";
 import { defaultUserState, UserState } from "../../../reducers/user/user.reducer";
 
 @Component({
@@ -11,15 +11,21 @@ import { defaultUserState, UserState } from "../../../reducers/user/user.reducer
     styleUrls: ["./channel-messages.component.css"]
 })
 export class ChannelMessagesComponent implements OnInit, DoCheck {
+    private static scrollPercentage = 10;
     @ViewChild("scrollableWrapper") scrollableWrapper: ElementRef;
     public currentUserMessage: string;
     public previousMsgsNumber = 0;
     private firstMessagesHaveLoaded = false;
     public channel: Channel;
     public userState: UserState;
+    private _hasScrollListener: boolean;
 
     constructor(private _state: Store<AppState>,
         private sendbird: MainSendbird) { }
+
+    get scrollPercentage(): number {
+        return ChannelMessagesComponent.scrollPercentage;
+    }
 
     ngDoCheck(): void {
         if (!this.channel) {
@@ -27,7 +33,7 @@ export class ChannelMessagesComponent implements OnInit, DoCheck {
         }
         if (this.previousMsgsNumber === 0 && this.channel.messages.data.length > 0 && this.userState.isIdentified) {
             this.previousMsgsNumber = this.channel.messages.data.length;
-            this.delayScrollDown();
+            this.delayScrollDown(true);
             this.firstMessagesHaveLoaded = true;
         }
     }
@@ -52,8 +58,21 @@ export class ChannelMessagesComponent implements OnInit, DoCheck {
             });
     }
 
-    delayScrollDown() {
-        setTimeout(this.scrollToBottom.bind(this), 500);
+    delayScrollDown(setScrollListener?: boolean) {
+        setTimeout(() => {
+            this.scrollToBottom();
+            if (!this._hasScrollListener && this.scrollableWrapper && setScrollListener) {
+                const el = this.scrollableWrapper.nativeElement;
+                el.addEventListener("scroll", () => {
+                    const hasEnoughMessages = this.channel.messages.data.length >= MAX_MESSAGES_PER_LOAD;
+                    const isCloseToTop = ((el.scrollTop * 100) / el.scrollHeight) <= this.scrollPercentage;
+                    if (hasEnoughMessages && isCloseToTop) {
+                        console.warn("##### GO FETCH GO #####");
+                    }
+                });
+                this._hasScrollListener = true;
+            }
+        }, 500);
     }
 
     scrollToBottom(): void {
