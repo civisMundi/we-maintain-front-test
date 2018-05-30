@@ -17,6 +17,13 @@ export const successFetchCurrentChannelMsgs = (data: Message[]): Action => {
     };
 };
 
+export const successFetchCurrentChannelOlderMsgs = (data: Message[]): Action => {
+    return {
+        type: channelsTypes.SUCCESS_FETCH_CURRENT_OLDER_CHANNEL_MESSAGES,
+        payload: { data }
+    };
+};
+
 export const failFetchCurrentChannelMsgs = (): Action => {
     return {
         type: channelsTypes.FAIL_FETCH_CURRENT_CHANNEL_MESSAGES
@@ -66,5 +73,11 @@ export const removeLoggedInUsersOnCurrentChannel = (userIds: string[]): Action =
     return {
         type: channelsTypes.REMOVE_CURRENT_CHANNEL_LOGGEDIN_USERS,
         payload: { data: userIds },
+    };
+};
+
+export const toggleFetchedAllCurrentChannelMessages = (): Action => {
+    return {
+        type: channelsTypes.TOGGLE_ALL_CURRENT_CHANNEL_MSGS_FETCHED,
     };
 };

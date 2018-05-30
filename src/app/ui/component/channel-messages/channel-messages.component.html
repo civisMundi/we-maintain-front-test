@@ -2,6 +2,9 @@
     <div class="full-width full-height flex-column justify-content-end align-items-start relative">
         <mat-spinner id="fetching-messages-spinner" *ngIf="channel.messages.isFetching" diameter="40" color="primary"></mat-spinner>
         <div #scrollableWrapper id="scrollableWrapper" class="full-height absolute full-width absolute-msg-container">
+            <div id="channel-creation-message" class="flex-column" *ngIf="channel.messages.allMessagesFetched">
+                <p class="margin-auto text-center">Channel start</p>
+            </div>
             <p class="absolute empty-channel-warning full-width text-center" *ngIf="channel.messages.data.length == 0; else messagesList">This channel has no messages yet</p>
         </div>
         <form class="asbolute user-message-form full-width flex-row">

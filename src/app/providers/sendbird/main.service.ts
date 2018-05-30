@@ -21,6 +21,7 @@ export class MainSendbird {
     private _sbChannel: SendBird.OpenChannel;
     private _channelHandler: SendBird.ChannelHandler;
     private __channelHandlerIds: { id: string, used: boolean}[] = [];
+    private _messagesQuery: SendBird.PreviousMessageListQuery;
 
     constructor(private _state: Store<AppState>) {
         _state.select((state: AppState) => state)
@@ -168,10 +169,10 @@ export class MainSendbird {
     fetchCurrentOpenChannelMessages(): Promise<boolean> {
         return new Promise((resolve) => {
             this._state.dispatch(channelsActions.fetchingCurrentChannelMsgs());
-            this._sbChannel.createPreviousMessageListQuery()
-                .load(MAX_MESSAGES_PER_LOAD, true, (messageList, error) => {
+            this._messagesQuery = this._sbChannel.createPreviousMessageListQuery();
+            this._messagesQuery.load(MAX_MESSAGES_PER_LOAD, true, (messageList, error) => {
                 if (error) {
-                    console.warn("sendUserMessage - error", error);
+                    console.warn("fetchMessages - error", error);
                     this._state.dispatch(channelsActions.failFetchCurrentChannelMsgs());
                     this._state.dispatch(setSnackMsg(`Failed to retreive channel messages`));
                     resolve(false);
@@ -231,6 +232,22 @@ export class MainSendbird {
     }
 
     fetchMoreOpenChannelMessages() {
-        // @TODO https://docs.sendbird.com/javascript#open_channel_3_loading_previous_messages
+        if (!this._channelsState.current.messages.allMessagesFetched
+            &&  this._messagesQuery
+            && !this._channelsState.current.messages.isFetching) {
+            this._state.dispatch(channelsActions.fetchingCurrentChannelMsgs());
+            this._messagesQuery.load(MAX_MESSAGES_PER_LOAD, true, (messageList, error) => {
+                if (error) {
+                    console.warn("fetch older messages - error", error);
+                    this._state.dispatch(channelsActions.failFetchCurrentChannelMsgs());
+                    this._state.dispatch(setSnackMsg(`Failed to retreive older channel messages`));
+                    return;
+                }
+                if (messageList.length < MAX_MESSAGES_PER_LOAD) {
+                    this._state.dispatch(channelsActions.toggleFetchedAllCurrentChannelMessages());
+                }
+                this._state.dispatch(channelsActions.successFetchCurrentChannelOlderMsgs(messageList.reverse()));
+            });
+        }
     }
 }
