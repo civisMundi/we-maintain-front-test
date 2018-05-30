@@ -8,7 +8,7 @@
     <mat-list class="full-width" id="online-users-container" *ngIf="channel.users.loggedIn.length > 0; else noUsers">
         <h3 mat-subheader>Connected users</h3>
         <mat-divider></mat-divider>
-        <mat-list-item *ngFor="let user of channel.users.loggedIn">
+        <mat-list-item class="fade-in one" *ngFor="let user of channel.users.loggedIn">
             <img *ngIf="user.profileUrl" matListAvatar class="loggedin-user-img" [src]="user.profileUrl" alt="user image">
             <mat-icon *ngIf="!user.profileUrl" class="default-loggedin-user-icon" mat-list-icon>person</mat-icon>
             <h4 mat-line>{{ user.nickname || user.userId }}</h4>

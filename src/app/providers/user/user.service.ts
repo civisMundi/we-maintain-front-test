@@ -64,6 +64,7 @@ export class UserService {
         this._state.dispatch(logoutUser());
         this.removeUserId();
         const sb = await this.sendbird.getSb();
+        this.sendbird.exitCurrentChannel();
         sb.disconnect();
     }
 }

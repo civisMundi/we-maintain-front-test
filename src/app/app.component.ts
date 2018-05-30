@@ -1,10 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { MatDialog, MatSnackBar, MatSnackBarRef, SimpleSnackBar } from "@angular/material";
+import { Store } from "@ngrx/store";
 
 import { LoginBoxComponent } from "./ui/component/login-box/login-box.component";
+import { MainSendbird } from "./providers/sendbird/main.service";
 import { UserService } from "./providers/user/user.service";
 import { User } from "./typings/User";
-import { Store } from "@ngrx/store";
 import { AppState } from "./reducers";
 import { UserState, defaultUserState } from "./reducers/user/user.reducer";
 import { setSnackMsg } from "./actions/notifications/notifications.action";
@@ -14,10 +15,15 @@ import { setSnackMsg } from "./actions/notifications/notifications.action";
     templateUrl: "./app.component.html",
     styleUrls: ["./app.component.css"]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
     public userState: UserState;
     private snackbarRef: MatSnackBarRef<SimpleSnackBar> = null;
-    constructor(public dialog: MatDialog, public userService: UserService, private _state: Store<AppState>, public snackBar: MatSnackBar) {}
+    constructor(
+        public dialog: MatDialog,
+        public userService: UserService,
+        public sendbird: MainSendbird,
+        private _state: Store<AppState>,
+        public snackBar: MatSnackBar) {}
 
     ngOnInit() {
         this._state
@@ -41,6 +47,10 @@ export class AppComponent implements OnInit {
             }
         });
         this.userService.restoreLocalUser();
+    }
+
+    ngOnDestroy() {
+        this.sendbird.exitCurrentChannel();
     }
 
     openDialog(): void {
