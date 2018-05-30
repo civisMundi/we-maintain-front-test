@@ -8,6 +8,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { StoreModule } from "@ngrx/store";
 import { appReducer } from "./reducers";
+import { MainSendbird } from "./providers/sendbird/main.service";
 
 const matDialog: Partial<MatDialog> = {
     open: jasmine.createSpy(),
@@ -16,6 +17,9 @@ const userService: Partial<UserService> = {
     noAuthLogin: jasmine.createSpy(),
     restoreLocalUser: jasmine.createSpy(),
     storeUserId: jasmine.createSpy(),
+};
+const senbird: Partial<MainSendbird> = {
+    exitCurrentChannel: jasmine.createSpy(),
 };
 
 @Component({ selector: "router-outlet", template: "" }) // tslint:disable-line
@@ -64,6 +68,7 @@ describe("AppComponent", () => {
             providers: [
                 { provide: MatDialog, useValue: matDialog},
                 { provide: UserService, useValue: userService},
+                { provide: MainSendbird, useValue: senbird},
             ]
         }).compileComponents();
     }));
