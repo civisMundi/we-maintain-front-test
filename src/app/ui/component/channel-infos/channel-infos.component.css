@@ -1,5 +1,5 @@
-
 .channel-infos .channel-infos-banner{
+    height: 40%;
     max-height: 200px;
     overflow: hidden;
     background-color: rgba(8, 8, 8, .3)
@@ -26,4 +26,22 @@
     text-transform: capitalize;
     font-style: italic;
     font-size: 11px;
+}
+
+#online-users-container {
+    height: 60%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.mat-list-item {
+    word-break: break-all;
+}
+.mat-list-item .loggedin-user-img {
+    max-width: 30px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.user-active-status {
+    color: rgba(8, 8, 8, .3);
 }
