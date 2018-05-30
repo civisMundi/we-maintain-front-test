@@ -28,6 +28,7 @@
     "@ngrx/store-devtools": "github:ngrx/store-devtools-builds",
     "core-js": "^2.5.7",
     "hammerjs": "^2.0.8",
+    "ngx-infinite-scroll": "^6.0.0",
     "rxjs": "^6.2.0",
     "sendbird": "^3.0.63",
     "zone.js": "^0.8.26"

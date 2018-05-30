@@ -1,11 +1,12 @@
 .channel-messages {
     overflow-y: auto;
 }
-.absolute-msg-container {
+#scrollableWrapper {
     top: 0;
     left: 0;
-    height: calc(100% - 100px);
+    height: calc(100% - 400px);
     overflow-y: auto;
+    padding-top: 300px;
 }
 .empty-channel-warning {
     top: 50%;
