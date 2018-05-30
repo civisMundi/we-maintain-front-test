@@ -4,9 +4,8 @@
 #scrollableWrapper {
     top: 0;
     left: 0;
-    height: calc(100% - 400px);
+    height: calc(100% - 100px);
     overflow-y: auto;
-    padding-top: 300px;
 }
 .empty-channel-warning {
     top: 50%;
@@ -28,4 +27,13 @@
 }
 #mat-form-field-textarea {
     width: 90%;
+}
+#channel-creation-message {
+    padding-bottom: 5px;
+}
+#channel-creation-message p {
+    font-size: x-large;
+    width: 80%;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(8, 8, 8, .4);
 }

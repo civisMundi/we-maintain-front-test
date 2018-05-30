@@ -20,6 +20,7 @@ export class ChannelMessagesComponent implements OnInit, DoCheck {
     public userState: UserState;
     private _hasScrollListener: boolean;
 
+
     constructor(private _state: Store<AppState>,
         private sendbird: MainSendbird) { }
 
@@ -67,7 +68,7 @@ export class ChannelMessagesComponent implements OnInit, DoCheck {
                     const hasEnoughMessages = this.channel.messages.data.length >= MAX_MESSAGES_PER_LOAD;
                     const isCloseToTop = ((el.scrollTop * 100) / el.scrollHeight) <= this.scrollPercentage;
                     if (hasEnoughMessages && isCloseToTop) {
-                        console.warn("##### GO FETCH GO #####");
+                        this.sendbird.fetchMoreOpenChannelMessages();
                     }
                 });
                 this._hasScrollListener = true;

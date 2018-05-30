@@ -13,6 +13,7 @@ export interface Channel {
     messages: {
         data: Message[];
         isFetching: boolean;
+        allMessagesFetched: boolean;
     };
     entered: boolean;
     users: {
@@ -33,6 +34,7 @@ export const defaultChannelsState: ChannelsState = {
         messages: {
             data: [],
             isFetching: false,
+            allMessagesFetched: false,
         },
         entered: false,
         users: {
@@ -109,6 +111,18 @@ export const channelsReducer: ActionReducer<ChannelsState> = (state: ChannelsSta
                     }
                 }
             };
+        case channelsTypes.SUCCESS_FETCH_CURRENT_OLDER_CHANNEL_MESSAGES:
+            return {
+                ...state,
+                current: {
+                    ...state.current,
+                    messages: {
+                        ...state.current.messages,
+                        data: payload.data.concat(state.current.messages.data),
+                        isFetching: false,
+                    }
+                }
+            };
         case channelsTypes.FAIL_FETCH_CURRENT_CHANNEL_MESSAGES:
             return {
                 ...state,
@@ -158,6 +172,17 @@ export const channelsReducer: ActionReducer<ChannelsState> = (state: ChannelsSta
                             ),
                     },
                 }
+            };
+        case channelsTypes.TOGGLE_ALL_CURRENT_CHANNEL_MSGS_FETCHED:
+            return {
+                ...state,
+                current: {
+                    ...state.current,
+                    messages: {
+                        ...state.current.messages,
+                        allMessagesFetched: !state.current.messages.allMessagesFetched,
+                    },
+                },
             };
         default:
             return state;

@@ -13,6 +13,7 @@ export const defaultState: ChannelsState = {
         messages: {
             data: [],
             isFetching: false,
+            allMessagesFetched: false,
         },
         entered: false,
         users: {
@@ -172,6 +173,103 @@ describe("Reducer - Channels", () => {
                 messages: {
                     ...defaultState.current.messages,
                     isFetching: false,
+                }
+            }
+        });
+    }));
+
+    it("should SUCCESS_FETCH_CURRENT_OLDER_CHANNEL_MESSAGES", async(() => {
+        const state = {
+            ...defaultState,
+            current: {
+                ...defaultState.current,
+                messages: {
+                    ...defaultState.current.messages,
+                    data: [{
+                        channelUrl: "coucou",
+                        channelType: "coucou",
+                        messageId: 123,
+                        message: "coucou",
+                        messageType: "coucou",
+                        data: "coucou",
+                        customType: "coucou",
+                        mentionedUsers: [],
+                        createdAt: 123,
+                        updatedAt: 123,
+                        _sender: null
+                    }],
+                    isFetching: false,
+                }
+            }
+        };
+        const action: Action = {
+            type: channelsTypes.SUCCESS_FETCH_CURRENT_OLDER_CHANNEL_MESSAGES,
+            payload: {
+                data: [{
+                    channelUrl: "coucou2",
+                    channelType: "coucou2",
+                    messageId: 321,
+                    message: "coucou2",
+                    messageType: "coucou2",
+                    data: "coucou2",
+                    customType: "coucou2",
+                    mentionedUsers: [],
+                    createdAt: 321,
+                    updatedAt: 321,
+                    _sender: null
+                }]
+            },
+        };
+        expect(channelsReducer(state, action)).toEqual({
+            ...defaultState,
+            current: {
+                ...defaultState.current,
+                messages: {
+                    ...defaultState.current.messages,
+                    data: [
+                        {
+                            channelUrl: "coucou2",
+                            channelType: "coucou2",
+                            messageId: 321,
+                            message: "coucou2",
+                            messageType: "coucou2",
+                            data: "coucou2",
+                            customType: "coucou2",
+                            mentionedUsers: [],
+                            createdAt: 321,
+                            updatedAt: 321,
+                            _sender: null
+                        },
+                        {
+                            channelUrl: "coucou",
+                            channelType: "coucou",
+                            messageId: 123,
+                            message: "coucou",
+                            messageType: "coucou",
+                            data: "coucou",
+                            customType: "coucou",
+                            mentionedUsers: [],
+                            createdAt: 123,
+                            updatedAt: 123,
+                            _sender: null
+                    }],
+                    isFetching: false,
+                }
+            }
+        });
+    }));
+
+    it("should TOGGLE_ALL_CURRENT_CHANNEL_MSGS_FETCHED", async(() => {
+        const action: Action = {
+            type: channelsTypes.TOGGLE_ALL_CURRENT_CHANNEL_MSGS_FETCHED,
+        };
+        expect(channelsReducer(defaultState, action)).toEqual({
+            ...defaultState,
+            current: {
+                ...defaultState.current,
+                messages: {
+                    ...defaultState.current.messages,
+                    allMessagesFetched: true,
                 }
             }
         });

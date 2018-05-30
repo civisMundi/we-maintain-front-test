@@ -33,6 +33,13 @@ describe("Action - Channels", () => {
         });
     }));
 
+    it("should dispatch SUCCESS_FETCH_CURRENT_OLDER_CHANNEL_MESSAGES", async(() => {
+        expect(channelsActions.successFetchCurrentChannelOlderMsgs([])).toEqual({
+            type: channelsTypes.SUCCESS_FETCH_CURRENT_OLDER_CHANNEL_MESSAGES,
+            payload: { data: [] }
+        });
+    }));
+
     it("should dispatch SUCCESS_FETCH_CURRENT_CHANNEL_MESSAGES", async(() => {
         expect(channelsActions.successFetchCurrentChannelMsgs([])).toEqual({
             type: channelsTypes.SUCCESS_FETCH_CURRENT_CHANNEL_MESSAGES,
@@ -91,6 +98,12 @@ describe("Action - Channels", () => {
         expect(channelsActions.removeLoggedInUsersOnCurrentChannel(["id1", "id2"])).toEqual({
             type: channelsTypes.REMOVE_CURRENT_CHANNEL_LOGGEDIN_USERS,
             payload: { data: ["id1", "id2"] },
+        });
+    }));
+
+    it("should dispatch TOGGLE_ALL_CURRENT_CHANNEL_MSGS_FETCHED", async(() => {
+        expect(channelsActions.toggleFetchedAllCurrentChannelMessages()).toEqual({
+            type: channelsTypes.TOGGLE_ALL_CURRENT_CHANNEL_MSGS_FETCHED,
         });
     }));
 });
