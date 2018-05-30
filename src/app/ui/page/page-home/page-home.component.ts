@@ -22,7 +22,7 @@ export class PageHomeComponent implements OnInit {
             .select((state: AppState) => state)
             .subscribe((state: AppState) => {
                 this.channel = state.channels ? state.channels.current : defaultChannelsState.current;
-                this.userState = state.user ? state.user : defaultUserState;
+                this.userState = state.user || defaultUserState;
             });
     }
 

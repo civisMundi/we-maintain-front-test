@@ -15,7 +15,7 @@ describe("ChannelInfosComponent", () => {
             declarations: [
                 ChannelInfosComponent,
                 MatSpinnerComponent,
-            ]
+            ],
         })
         .compileComponents();
     }));

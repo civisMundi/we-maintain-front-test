@@ -18,7 +18,6 @@ export class ChannelMessagesComponent implements OnInit, DoCheck {
     public channel: Channel;
     public userState: UserState;
 
-
     constructor(private _state: Store<AppState>,
         private sendbird: MainSendbird) { }
 
