@@ -7,6 +7,7 @@ import { AppState } from "../../reducers";
 import { setSnackMsg } from "../../actions/notifications/notifications.action";
 import * as channelsActions from "../../actions/channels/channels.action";
 
+export const USERS_REFRESH_DELAY = 10000;
 export const MAX_MESSAGES_PER_LOAD = 25;
 export const MAX_CHANNELS_HANDLER = 10;
 
@@ -35,7 +36,7 @@ export class MainSendbird {
         }
     }
 
-    private async initMessageHandler() {
+    private async initChannelHandlers() {
         const sb = await this.getSb();
         this._channelHandler = new sb.ChannelHandler();
         // tslint:disable-next-line:max-line-length
@@ -44,6 +45,17 @@ export class MainSendbird {
                 this._state.dispatch(channelsActions.successFetchCurrentChannelMsgs([message]));
             }
         };
+        this._channelHandler.onUserEntered = (pingedChannel, user) => {
+            if (pingedChannel.url === this._sbChannel.url) {
+                this._state.dispatch(channelsActions.addLoggedInUsersOnCurrentChannel([user]));
+            }
+        };
+        this._channelHandler.onUserExited = (pingedChannel, user) => {
+            if (pingedChannel.url === this._sbChannel.url) {
+                this._state.dispatch(channelsActions.removeLoggedInUsersOnCurrentChannel([user.userId]));
+            }
+        };
+
         sb.addChannelHandler(await this.getHandlerID(), this._channelHandler);
         return;
     }
@@ -51,7 +63,7 @@ export class MainSendbird {
     async getSb() {
         if (MainSendbird.instance === null) {
             MainSendbird.instance = await new SendBird({ appId: "544368C6-DF3B-4534-A79D-054B15F64845" });
-            this.initMessageHandler();
+            this.initChannelHandlers();
         }
         // console.log("MainSendbird.instance", MainSendbird.instance);
         return MainSendbird.instance;
@@ -147,6 +159,7 @@ export class MainSendbird {
                 }
                 this._sbChannel = channel;
                 this._state.dispatch(channelsActions.successFetchCurrentChannelInfos(channel));
+                setInterval(this.fetchCurrentOpenChannelUsers.bind(this), USERS_REFRESH_DELAY);
                 resolve(true);
             });
         });
@@ -173,12 +186,47 @@ export class MainSendbird {
     fetchCurrentOpenChannelUsers() {
         const participantListQuery = this._sbChannel.createParticipantListQuery();
 
-        participantListQuery.next((users: SendBird.User[], error) => {
+        participantListQuery.next((actualUsers: SendBird.User[], error) => {
             if (error) {
                 console.warn("fetchCurrentOpenChannelUsers Error:: ", error);
                 return;
             }
-            this._state.dispatch(channelsActions.addLoggedInUsersOnCurrentChannel(users));
+            const oldUsers: string = this._channelsState.current.users.loggedIn
+                .map(u => u.userId)
+                .sort()
+                .join("-M-YC-USTOMSEPARATOR");
+
+            const newUsers: string = actualUsers
+                .map(u => u.userId)
+                .sort()
+                .join("-M-YC-USTOMSEPARATOR");
+            if (oldUsers === newUsers) {
+                return;
+            }
+            if (this._channelsState.current.users.loggedIn.length > actualUsers.length) {
+                const oldUserIdsArr: string[] = oldUsers.split("-M-YC-USTOMSEPARATOR");
+                const newUserIdsArr: string[] = newUsers.split("-M-YC-USTOMSEPARATOR");
+                for (let index = 0; index < oldUserIdsArr.length; index++) {
+                    const oldUserId = oldUserIdsArr[index];
+                    if (!!!newUserIdsArr.find((newUserId) => newUserId === oldUserId)) {
+                        this._state.dispatch(channelsActions.removeLoggedInUsersOnCurrentChannel([oldUserId]));
+                        break;
+                    }
+                }
+            } else {
+                this._state.dispatch(channelsActions.addLoggedInUsersOnCurrentChannel(actualUsers));
+            }
+        });
+    }
+
+    exitCurrentChannel() {
+        if (!this._channelsState.current.entered) {
+            return;
+        }
+        this._sbChannel.exit((channel: SendBird.OpenChannel, error) => {
+            if (error) {
+                console.warn(`user could not exit channel  ${channel.url}`, error);
+            }
         });
     }
 }
